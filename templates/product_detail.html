@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card p-4 shadow-sm">
+        <h2>{{ product.name }}</h2>
+        <p>{{ product.description }}</p>
+        <p class="fw-bold">{{ product.price }}円</p>
+        <p>カテゴリ：{{ product.categories.name }}</p>
+        <p>SKU: {{ product.sku }}</p>
+        <p>ブランド: {{ product.brand }}</p>
+        <p>状態: {{ product.status }}</p>
+        <p>仕様: {{ product.spec_json }}</p>
+        <p>在庫数: {{ product.stock }}</p>
+        <form action="{{ url_for('shop_cart.add_to_cart', product_id=product.id) }}" method="post">
+            <button class="btn btn-primary">カートに追加</button>
+        </form>
+    </div>
+</div>
+{% endblock %}id
+name
+price
+description
+category_id
+stock
+sku
+brand
+status
+spec_json
+created_at
+updated_at
+

@@ -6,4 +6,13 @@ shop_product_detail_bp = Blueprint("shop_products_detail", __name__, url_prefix=
 @shop_product_detail_bp.get("/detail/<int:product_id>")
 def product_detail(product_id):
     product = Product.query.get_or_404(product_id)
-    return render_template("shop/product_detail.html", product=product)
+    
+    spec = None
+    if product.spec_json:
+        spec = json.loads(product.spec_json)
+    
+    return render_template(
+        "shop/product_detail.html", 
+        product=product,
+        spec=spec
+    )

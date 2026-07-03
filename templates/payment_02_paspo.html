@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}決済 | Self Drink Bar{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">決済（疑似）</h2>
+    <p class="text-muted">交通系ICカード決済（疑似）を選択しました。</p>
+
+    <div class="card p-4 shadow-sm">
+        <h4 class="mb-3">交通系ICカードをタッチしてください。</h4>
+
+        <div class="ic-reader">
+            <img src="/static/img/ic_reader.png" alt="ICリーダー" class="img-fruid" style="max-width: 200px;">
+        </div>
+
+        <p id="status" class="text-center fw-bold text-secondary">読み取り待機中…</p>
+    </div>  
+
+    <form id="autoForm" action="/payment/complete" method="POST">
+        <input type="hidden" name="ic_status" value="success">
+    </form>
+</div>
+<script>
+    // 読み取り演出
+    setTimeout(() => {
+        document.getElementById("status").textContent = "読み取り中…";
+    }, 6000);
+
+    // 決済完了へ自動遷移
+    setTimeout(() => {
+        document.getElementById("status").textContent = "決済処理中…";
+        document.getElementById("autoForm").submit();
+    }, 6000);
+    
+</script>
+
+{% endblock %}

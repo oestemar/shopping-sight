@@ -8,6 +8,6 @@ def product_list(category_id):
 
     try:
         products = Product.query.filter_by(category_id=category_id).all()        
-        return render_template('shop/products.html', products=products)
+        return render_template('products.html', products=products, step=None)
     except Exception as e:
         return render_template('error.html', message=str(e))

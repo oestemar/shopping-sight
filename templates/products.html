@@ -19,7 +19,7 @@
                                 <button type="button" class="btn btn-primary add-to-cart" data-id="{{ product.id }}">追加</button>
                             </div>
                         </div>
-                        <a href="{{ url_for('shop_products.product_detail', product_id=product.id) }}">
+                        <a href="{{ url_for('shop_product_detail.product_detail', product_id=product.id) }}">
                     </div>
                 </div>
             {% endfor %}

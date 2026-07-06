@@ -29,7 +29,45 @@
         </div>  
     </header>
 
-    <!-- ③ 中央メイン：メニュー（タブ切り替え） -->
+    <!-- ② 手続き遷移表示（ステップバー） -->    
+    {% if step %}
+    <nav class="my-4 w-50 mx-auto">
+        <ul class="nav justify-content-center">
+            <li class="nav-item flex-fill text-center mx-3">
+                <div class="circle {% if step == 'menu' %}active{% endif %}">
+                    {% if step == 'cart' %}✓{% endif %}
+                </div>
+                <div class="small mt-1">カート</div>
+            </li>
+            <li class="nav-item flex-fill text-center mx-3">
+                <div class="circle {% if step == 'cart' %}active{% endif %}">
+                    {% if step == 'checkout' %}✓{% endif %}
+                </div>
+                <div class="small mt-1">精算確認</div>
+            </li>
+            <li class="nav-item flex-fill text-center mx-3">
+                <div class="circle {% if step == 'checkout' %}active{% endif %}">
+                    {% if step == 'payment_method' %}✓{% endif %}
+                </div>
+                <div class="small mt-1">決済方法選択</div>
+            </li>
+            <li class="nav-item flex-fill text-center mx-3">
+                <div class="circle {% if step == 'payment_method' %}active{% endif %}">
+                    {% if step == 'payment' %}✓{% endif %}
+                </div>          
+                <div class="small mt-1">決済</div>
+            </li>
+            <li class="nav-item flex-fill text-center mx-3">
+                <div class="circle {% if step == 'payment' %}active{% endif %}">
+                    {% if step == 'complete' %}✓{% endif %}
+                </div>
+                <div class="small mt-1">完了</div>
+            </li>            
+        </ul>
+    </nav>
+    {% endif %}
+
+    <!-- ③ 中央メイン：メニ    <!-- ② 手続き遷移表示（ステップバー） -->    
     <main>
         {% block content %}      
         {% endblock %}

@@ -7,5 +7,5 @@ shop_menu_bp = Blueprint("shop_menu", __name__)
 @shop_menu_bp.get('/')
 def menu():
     categories = Category.query.all()
-    return render_template("shop/menu.html", categories=categories))
+    return render_template("shop/menu.html", categories=categories)
 

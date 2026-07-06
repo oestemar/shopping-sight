@@ -18,7 +18,7 @@ def view_cart():
 
     total_price = sum(item.product.price * item.quantity for item in cart_items)
 
-    return render_template("shop/cart.html", cart_items=cart_items, total_price=total_price)
+    return render_template("/cart.html", cart_items=cart_items, total_price=total_price, step="cart")
 
 
 # -------------------------

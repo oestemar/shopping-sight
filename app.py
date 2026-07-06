@@ -11,6 +11,7 @@ from shop.routes_products import shop_products_bp
 from shop.routes_product_detail import shop_product_detail_bp
 from shop.routes_cart import shop_cart_bp
 from shop.routes_checkout import shop_checkout_bp
+from shop.routes_payment_method import shop_payment_method_bp
 from shop.routes_payment import shop_payment_bp
 from shop.routes_complete import shop_complete_bp
 
@@ -38,6 +39,7 @@ def create_app():
     app.register_blueprint(shop_products_bp, url_prefix="/shop/products")
     app.register_blueprint(shop_cart_bp, url_prefix="/shop/cart")
     app.register_blueprint(shop_checkout_bp, url_prefix="/shop/checkout")
+    app.register_blueprint(shop_payment_method_bp, url_prefix="/shop/payment_method")
     app.register_blueprint(shop_payment_bp, url_prefix="/shop/payment")
     app.register_blueprint(shop_complete_bp, url_prefix="/shop/complete")
 

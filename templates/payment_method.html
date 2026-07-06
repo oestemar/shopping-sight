@@ -2,19 +2,13 @@
 {% block title %}決済方法 | Self Drink Bar{% endblock %}
 
 {% block content %}
-<h2 class="text-white nav-tabs">決済方法を選択　※ポートフォリオ用疑似</h2>
-
-<div class="payment-methods">
-    <div class="pay-operation-wrapper"> 
+<div class="container mt-4">
+    <div class="card p-4 shadow-sm">
+        <h2 class="mb-3">決済方法を選択　※ポートフォリオ用疑似</h2>
         <form id="payment-form" action="/payment" method="POST">
             <label>
-                <input type="radio" name="method" value="cash" required>
-                現金（疑似決済）
-            </label>
-            <br>
-            <label>
-                <input type="radio" name="method" value="card">
-                クレジットカード（疑似決済）                
+                <input type="radio" name="method" value="stripe" required>
+                Stripe（疑似決済）
             </label>
             <br>
             <label>

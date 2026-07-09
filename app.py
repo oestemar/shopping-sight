@@ -1,5 +1,5 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, redirect
+from flask_sqlalchemy import SQLAlchemy 
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 import os
@@ -26,7 +26,6 @@ from admin.routes_images import images_bp
 def create_app():
     load_dotenv()
     app = Flask(__name__)
-    app.config.from_object("config.Config")
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -34,9 +33,21 @@ def create_app():
     db.init_app(app)
     Migrate(app, db)
 
+    # モデルを読み込む
+    from models.user import User
+    from models.admin import Admin
+    from models.category import Category
+    from models.category_image import CategoryImage
+    from models.product import Product
+    from models.image import ProductImage
+    from models.order import Order
+    from models.order_item import OrderItem
+    from models.cart import Cart
+    
     # Blueprint 登録
     app.register_blueprint(shop_menu_bp, url_prefix="/shop/menu")
     app.register_blueprint(shop_products_bp, url_prefix="/shop/products")
+    app.register_blueprint(shop_product_detail_bp, url_prefix="/shop/product_detail")
     app.register_blueprint(shop_cart_bp, url_prefix="/shop/cart")
     app.register_blueprint(shop_checkout_bp, url_prefix="/shop/checkout")
     app.register_blueprint(shop_payment_method_bp, url_prefix="/shop/payment_method")
@@ -50,6 +61,10 @@ def create_app():
     app.register_blueprint(users_bp, url_prefix="/admin/users")
     app.register_blueprint(admins_bp, url_prefix="/admin/admins")
     app.register_blueprint(images_bp, url_prefix="/admin/images")
+
+    @app.get("/")  
+    def index():
+        return redirect("/shop/menu")
 
     return app
 

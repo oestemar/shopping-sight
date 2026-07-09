@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
 from models.product import Product
 from models.cart import Cart
-from extensions import db
+from models import db
 
 shop_cart_bp = Blueprint("shop_cart", __name__, url_prefix="/cart")
 

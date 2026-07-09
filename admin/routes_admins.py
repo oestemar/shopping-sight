@@ -19,7 +19,7 @@ def admin_add_action():
     pass
 
 @admins_bp.get("/delete/<int:admin_id>")
-def admin_delete_action(admin_id):
+def admin_delete(admin_id):
     return render_template("admin/admins/delete.html", admin_id=admin_id)
 
 @admins_bp.post("/delete/<int:admin_id>")

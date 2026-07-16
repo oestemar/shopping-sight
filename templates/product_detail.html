@@ -3,45 +3,49 @@
 
 {% block content %}
 <div class="container mt-4">
-    <div class="card p-4 shadow-sm">
-        <h2>{{ product.name }}</h2>
-        <p class="fw-bold">{{ product.price }}円</p>
-        <div class="row">
-            <div class="col-md-6">商品の説明</div>
-            <div class="col-md-6">{{ product.description }}</div>        
+    <div class="mx-auto w-50">
+        <div class="card p-4 shadow-sm">
+            <h2>{{ product.name }}</h2>
+            <p class="fw-bold">{{ product.price }}円</p>
+            <div class="row">
+                <div class="col-md-6">商品の説明</div>
+                <div class="col-md-6">{{ product.description }}</div>        
+            </div>
+            <div class="row">
+                <div class="col-md-6">カテゴリ</div>
+                <div class="col-md-6">{{ product.category.name }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">SKU</div>
+                <div class="col-md-6">{{ product.sku }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">ブランド</div>
+                <div class="col-md-6">{{ product.brand }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">状態</div>
+                <div class="col-md-6">{{ product.status }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">在庫数</div>
+                <div class="col-md-6">{{ product.stock }}</div>
+            </div>
+            {% if spec %}
+            <h4>仕様</h4>
+            <div class="row">
+                {% for key, value in spec.items() %}
+                    <div class="col-sm-4 fw-bold">{{ key }}</div>
+                    <div class="col-sm-8">{{ value }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <form action="{{ url_for('shop_cart.add_to_cart') }}" method="post" class="mt-auto">
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button class="btn btn-primary" style="position: relative; z-index: 1;">カートに追加</button>
+            </form>
         </div>
-        <div class="row">
-            <div class="col-md-6">カテゴリ</div>
-            <div class="col-md-6">{{ product.category.name }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">SKU</div>
-            <div class="col-md-6">{{ product.sku }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">ブランド</div>
-            <div class="col-md-6">{{ product.brand }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">状態</div>
-            <div class="col-md-6">{{ product.status }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">在庫数</div>
-            <div class="col-md-6">{{ product.stock }}</div>
-        </div>
-        {% if spec %}
-        <h4>仕様</h4>
-        <div class="row">
-            {% for key, value in spec.items() %}
-                <div class="col-sm-4 fw-bold">{{ key }}</div>
-                <div class="col-sm-8">{{ value }}</div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        <form action="{{ url_for('shop_cart.add_to_cart', product_id=product.id) }}" method="post">
-            <button class="btn btn-primary">カートに追加</button>
-        </form>
     </div>
 </div>
 {% endblock %}id

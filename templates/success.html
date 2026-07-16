@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Payment Success</title>
-</head>
-<body>
-  <h1>決済が完了しました</h1>
-  <p>ご購入ありがとうございました。</p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}shopping-sight{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <h1>決済が完了しました</h1>
+    <p>ご購入ありがとうございました。</p>
+</div>
+{% endblock %}

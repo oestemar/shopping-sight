@@ -29,9 +29,12 @@ def add_to_cart():
     user_id = session.get("user_id")
     if not user_id:
         return redirect("/shop/login")
+    
+    print("Request form data:", request.form)  # デバッグ用にフォームデータを出力
 
     product_id = int(request.form.get("product_id"))
     quantity = int(request.form.get("quantity", 1))
+    print(f"Product ID: {product_id}, Quantity: {quantity}")  # デバッグ用にデータを出力
 
     # 既にカートにあるか確認
     cart_item = Cart.query.filter_by(user_id=user_id, product_id=product_id).first()
@@ -44,27 +47,29 @@ def add_to_cart():
         new_item = Cart(
             user_id=user_id,
             product_id=product_id,
-            quantity=quantity
+            quantity=quantity,
+            price_at_added=Product.query.get(product_id).price
         )
         db.session.add(new_item)
 
     db.session.commit()
 
-    return redirect(url_for("shop_cart.view_cart"))
-
-
+    print("referrer:", request.referrer)
+    return redirect(request.referrer)
 # -------------------------
 # ③ カートから削除（DELETE）
 # -------------------------
 @shop_cart_bp.post("/remove")
 def remove_from_cart():
     user_id = session.get("user_id")
-    product_id = int(request.form.get("product_id"))
+    item_id = int(request.form.get("item_id"))
 
-    cart_item = Cart.query.filter_by(user_id=user_id, product_id=product_id).first()
+    cart_item = Cart.query.filter_by(user_id=user_id, id=item_id).first()
 
     if cart_item:
         db.session.delete(cart_item)
         db.session.commit()
+    else:
+        print("削除するアイテムが見つかりません。")
 
     return redirect(url_for("shop_cart.view_cart"))

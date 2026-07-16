@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Shopping-sight{% endblock %}
 {% block content %}
+<div class="container mt-4">
     <div class="row row-cols-2 row-cols-md-3 g-4">
         {% for category in categories %}
         <div class="col">
@@ -11,7 +12,8 @@
             </a>
         </div>
         {% endfor %}
-    </div>  
+    </div>
+</div> 
 {% endblock %}
 
 {% block scripts %}

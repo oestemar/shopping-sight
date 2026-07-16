@@ -1,4 +1,4 @@
-from flask import Flask, redirect
+from flask import Flask, redirect, session
 from flask_sqlalchemy import SQLAlchemy 
 from flask_migrate import Migrate
 from dotenv import load_dotenv
@@ -6,6 +6,8 @@ import os
 
 from models import db
 
+from shop.routes_register import shop_register_bp
+from shop.routes_login import shop_login_bp
 from shop.routes_menu import shop_menu_bp
 from shop.routes_products import shop_products_bp
 from shop.routes_product_detail import shop_product_detail_bp
@@ -43,8 +45,16 @@ def create_app():
     from models.order import Order
     from models.order_item import OrderItem
     from models.cart import Cart
-    
+    from models.user import User
+
+    with app.app_context():
+        db.session.query(Cart).delete()
+        db.session.commit()
+        print("Cart table cleared.")
+        
     # Blueprint 登録
+    app.register_blueprint(shop_register_bp)
+    app.register_blueprint(shop_login_bp)
     app.register_blueprint(shop_menu_bp, url_prefix="/shop/menu")
     app.register_blueprint(shop_products_bp, url_prefix="/shop/products")
     app.register_blueprint(shop_product_detail_bp, url_prefix="/shop/product_detail")
@@ -61,6 +71,28 @@ def create_app():
     app.register_blueprint(users_bp, url_prefix="/admin/users")
     app.register_blueprint(admins_bp, url_prefix="/admin/admins")
     app.register_blueprint(images_bp, url_prefix="/admin/images")
+
+    @app.context_processor
+    def inject_cart_count():
+        user_id = session.get("user_id")
+        if not user_id:
+            print("cart_count: 0(no user)")
+            return dict(cart_count=0)
+
+        count = db.session.query(db.func.sum(Cart.quantity))\
+                        .filter_by(user_id=user_id).scalar() or 0
+
+        print(f"cart_count: {count}")
+        return dict(cart_count=count)
+
+    @app.context_processor
+    def inject_user():
+        user_id = session.get("user_id")
+        if not user_id:
+            return dict(login_user=None)
+
+        user = User.query.get(user_id)
+        return dict(login_user=user)
 
     @app.get("/")  
     def index():

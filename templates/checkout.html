@@ -4,28 +4,23 @@
 {% block content %}
 
 <div class="container mt-4">
-    <h2 class="mb-4">精算 ※ポートフォリオ用疑似</h2>
+    <h2 class="mb-4">精算</h2>
+    <p>※ポートフォリオ用疑似</p>
     {% if cart_items|length == 0 %}
         <p>カートは空です。</p>
-        <a href="/menu" class="btn btn-secondary">← メニューに戻る</a>
+        <a href="/shop/menu" class="btn btn-secondary">← メニューに戻る</a>
     {% else %}
     <div class="row">
         <div class="col-md-8">
-            <table class="pay-operation-table">
+            <table class="table table-bordered">
                 <tr><th>商品番号</th><th>商品名</th><th>価格</th><th>数量</th><th>小計</th></tr>
                 {% for cart_item in cart_items %}
                 <tr>
-                    <td>{{ cart_item.id }}</td>
-                    <td>{{ cart_item.name }}</td>
-                    <td>{{ cart_item.price }}</td>
+                    <td>{{ cart_item.product_id }}</td>
+                    <td>{{ cart_item.product.name }}</td>
+                    <td>{{ cart_item.price_at_added }}</td>
                     <td>{{ cart_item.quantity }}</td>
-                    <td>{{ cart_item.subtotal }}</td>
-                    <td>
-                        <form action="/cart/remove" method="POST">
-                            <input type="hidden" name="item_id" value="{{ cart_item.id }}">
-                            <button type="submit" class="btn btn-primary pay-operation-delete">削除</button>
-                        </form>
-                    </td>
+                    <td>{{ cart_item.price_at_added * cart_item.quantity }}</td>
                 </tr>
             {% endfor %}
             </table>
@@ -50,9 +45,10 @@
             </div>
         </div>
     </div>
+    {% endif %}
     <div class="pay-operation-actions">
-        <a href="/cart" class="btn btn-primary btn-next">カートへ戻る</a>
-        <a href="/payment_method" class="btn btn-primary btn-next">決済方法選択へ進む</a>
+        <a href="/shop/cart" class="btn btn-primary btn-next">カートへ戻る</a>
+        <a href="/shop/payment_method" class="btn btn-primary btn-next">決済方法選択へ進む</a>
     </div>
 </div>
 {% endblock %}

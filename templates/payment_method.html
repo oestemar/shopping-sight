@@ -2,30 +2,53 @@
 {% block title %}決済方法 | Self Drink Bar{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="card p-4 shadow-sm">
-        <h2 class="mb-3">決済方法を選択　※ポートフォリオ用疑似</h2>
-        <form id="payment-form" action="/payment" method="POST">
-            <label>
-                <input type="radio" name="method" value="stripe" required>
-                Stripe（疑似決済）
-            </label>
-            <br>
-            <label>
-                <input type="radio" name="method" value="paspo">
-                paspo（疑似決済）
-            </label>
-            <br>
-            <label>
-                <input type="radio" name="method" value="qr">
-                QRコード（疑似決済）
-            </label>
-        </form>
+<div class="container">
+    <h2 class="mb-4">決済方法選択</h2>
+    <p>※ポートフォリオ用</p>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card p-4 shadow-sm mb-3">
+                <form id="payment-form" action="{{ url_for('shop_payment.payment_router') }}" method="POST">
+                    <label>
+                        <input type="radio" name="method" value="stripe" required>
+                        Stripe（疑似決済）
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="method" value="paspo">
+                        paspo（疑似決済）
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="method" value="qr">
+                        QRコード（疑似決済）
+                    </label>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm">
+                <h4 class="mb-3">ご請求金額</h4>
+                <table class="pay-operation-total-table">
+                    <tr>
+                        <td>税抜合計</td>
+                        <td>{{ total_price }}</td>
+                    </tr>
+                    <tr>
+                        <td>消費税</td>
+                        <td>{{ (total_price * 0.1) | round(0) | int }}</td>
+                    </tr>
+                    <tr>
+                        <td>税込合計</td>
+                        <td>{{ (total_price * 1.1) | round(0) | int }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="pay-operation-actions">
+            <a href="/shop/checkout" class="btn btn-primary btn-next">精算へ戻る</a>
+            <button type="submit" form="payment-form" class="btn btn-primary btn-next">決済</button>
+        </div>
     </div>
-</div>
-<div class="pay-operation-actions">
-    <a href="/checkout" class="btn btn-primary btn-back">精算内容の確認へ戻る</a>
-    <button type="button" class="btn btn-primary btn-next" onclick="document.getElementById('payment-form').submit();">決済へ進む</button>
-    </button>
-</div>
+    
 {% endblock %}

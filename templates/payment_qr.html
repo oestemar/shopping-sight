@@ -3,15 +3,16 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2 class="mb-3">決済　※ポートフォリオ用疑似</h2>
-    <p class="text-muted">QRコード決済（疑似）を選択しました。</p>
+    <div class="mt-4 text-center">
+        <h2 class="mb-3">決済</h2>
+    </div>
+    <p class="text-muted text-center">※QRコード決済（ポートフォリオ用）を選択しました。</p>
 
-    <div class="card p-4 shadow-sm">
-        <p class="mb-3">QRコードを読み取ってください。</p>
-        <p class="text-muted">※ポートフォリオ用の疑似決済です。</p>
+    <div class="card p-4 shadow-sm mx-auto" style="max-width: 400px;">
+        <p class="mb-3 text-center">QRコードを読み取ってください。</p>
 
         <!-- QRコード画像（自作 or フリー素材） -->
-        <div class="qr-image">
+        <div class="qr-image text-center">
             <img src="/static/img/qr_sample.png" alt="QRコード" width="200">
         </div>
 
@@ -20,7 +21,7 @@
     </div>
 </div>
 <!-- 自動で決済完了へ送信 -->
-<form id="autoForm" action="/payment/complete" method="POST">
+<form id="autoForm" action="{{ url_for('shop_payment.payment_complete_paspo') }}" method="POST">
     <input type="hidden" name="qr_status" value="success">
 </form>
 

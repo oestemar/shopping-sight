@@ -2,6 +2,8 @@ import stripe
 from flask import Blueprint, render_template, request, session, redirect, url_for
 from models.cart import Cart
 from models.order import Order
+from models import db
+
 import os
 
 shop_payment_bp = Blueprint("shop_payment", __name__, url_prefix="/payment")
@@ -46,7 +48,7 @@ def stripe_checkout():
             "price_data": {
                 "currency": "jpy",
                 "product_data": {"name": item.product.name},
-                "unit_amount": item.product.price * 100,
+                "unit_amount": item.product.price
             },
             "quantity": item.quantity,
         })
@@ -74,7 +76,7 @@ def paspo_checkout():
     )
     db.session.add(order)
     db.session.commit()
-    return render_template("payment_paspo.html", step="paspo")
+    return render_template("payment_paspo.html", step="payment")
 
 @shop_payment_bp.get("/qr")
 def qr_checkout():
@@ -89,9 +91,10 @@ def qr_checkout():
     )
     db.session.add(order)
     db.session.commit()    
-    return render_template("payment_qr.html", step="qr")
+    return render_template("payment_qr.html", step="payment")
 
-@shop_payment_bp.get("/success")
+# Stripe用の関数
+@shop_payment_bp.get("/complete")
 def payment_success():
     order_id = request.args.get("order_id")
     order = Order.query.get(order_id)
@@ -99,6 +102,7 @@ def payment_success():
     db.session.commit()
     return redirect(url_for("shop_complete.complete_success"))
 
+# Stripe用の関数
 @shop_payment_bp.get("/cancel")
 def payment_cancel():
     order_id = request.args.get("order_id")
@@ -107,3 +111,6 @@ def payment_cancel():
     db.session.commit() 
     return redirect(url_for("shop_complete.complete_cancel"))
 
+@shop_payment_bp.post("/complete_paspo")
+def payment_complete_paspo():
+    return redirect(url_for("shop_complete.complete_success"))

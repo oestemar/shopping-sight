@@ -4,8 +4,8 @@ shop_complete_bp = Blueprint("shop_complete", __name__, url_prefix="/complete")
 
 @shop_complete_bp.get("/success")
 def complete_success():
-    return render_template("success.html")
+    return render_template("success.html", step="success")
 
 @shop_complete_bp.get("/cancel")
 def complete_cancel():
-    return render_template("cancel.html")
+    return render_template("cancel.html", step="cancel")

@@ -12,4 +12,4 @@ def payment_method():
 
     cart_items = Cart.query.filter_by(user_id=user_id).all()
     total_price = sum(item.product.price * item.quantity for item in cart_items)
-    return render_template('payment_method.html', total_price=total_price, step="payment_method")
+    return render_template('payment_method.html', cart_items=cart_items, total_price=total_price, step="payment_method") 

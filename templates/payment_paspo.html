@@ -16,11 +16,13 @@
         </div>
 
         <p id="status" class="text-center fw-bold text-secondary">読み取り待機中…</p>
-    </div>  
-
-    <form id="autoForm" action="{{ url_for('shop_payment.payment_complete_paspo') }}" method="POST">
+    </div>  .
+    <p>DEBUG order_id: {{ order_id }}</p>
+    <form id="autoForm" action="{{ url_for('shop_payment.payment_success', order_id=order_id) }}" method="GET">
         <input type="hidden" name="ic_status" value="success">
     </form>
+
+
 </div>
 <script>
     // 読み取り演出
@@ -30,10 +32,11 @@
 
     // 決済完了へ自動遷移
     setTimeout(() => {
-        document.getElementById("status").textContent = "決済処理中…";
-        document.getElementById("autoForm").submit();
+        const form = document.getElementById("autoForm");
+        const url = form.action;
+        window.location.href = url;
     }, 6000);
-    
-</script>
 
-{% endblock %}
+    </script>
+
+    {% endblock %}

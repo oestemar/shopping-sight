@@ -2,6 +2,7 @@ import stripe
 from flask import Blueprint, render_template, request, session, redirect, url_for
 from models.cart import Cart
 from models.order import Order
+from models.order_item import OrderItem
 from models import db
 
 import os
@@ -42,6 +43,16 @@ def stripe_checkout():
     db.session.add(order)
     db.session.commit()
 
+    for item in cart_items:
+        order_item = OrderItem(
+            order_id=order.id,
+            product_id=item.product.id,
+            quantity=item.quantity,
+            price_at_order=item.product.price
+        )
+        db.session.add(order_item)
+    db.session.commit()
+
     line_items = []
     for item in cart_items:
         line_items.append({
@@ -76,7 +87,17 @@ def paspo_checkout():
     )
     db.session.add(order)
     db.session.commit()
-    return render_template("payment_paspo.html", step="payment")
+
+    for item in cart_items:
+        order_item = OrderItem(
+            order_id=order.id,
+            product_id=item.product.id,
+            quantity=item.quantity,
+            price_at_order=item.product.price
+        )
+        db.session.add(order_item)
+    db.session.commit()
+    return render_template("payment_paspo.html", order_id=order.id, step="payment")
 
 @shop_payment_bp.get("/qr")
 def qr_checkout():
@@ -90,13 +111,23 @@ def qr_checkout():
         status="processing"
     )
     db.session.add(order)
+    db.session.commit()
+    for item in cart_items:
+        order_item = OrderItem(
+            order_id=order.id,
+            product_id=item.product.id,
+            quantity=item.quantity,
+            price_at_order=item.product.price
+        )
+        db.session.add(order_item)
     db.session.commit()    
-    return render_template("payment_qr.html", step="payment")
+    return render_template("payment_qr.html", order_id=order.id, step="payment")
 
 # Stripe用の関数
 @shop_payment_bp.get("/complete")
 def payment_success():
     order_id = request.args.get("order_id")
+#    print(f"Payment success for order_id: {order_id}")  # デバッグ用に出力
     order = Order.query.get(order_id)
     order.status = "paid"
     db.session.commit()
@@ -113,4 +144,5 @@ def payment_cancel():
 
 @shop_payment_bp.post("/complete_paspo")
 def payment_complete_paspo():
-    return redirect(url_for("shop_complete.complete_success"))
+    order_id = request.form.get("order_id")
+    return redirect(url_for("shop_complete.complete_success", order_id=order_id))

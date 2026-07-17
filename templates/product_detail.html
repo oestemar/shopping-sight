@@ -40,12 +40,32 @@
                 {% endfor %}
             </div>
             {% endif %}
+
+            <!-- 数量増減欄 -->
+            <div class="input-group mb-3" style="max-width: 160px;">
+                <button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(this, -1)">−</button>
+                <input type="number" id="qty" class="form-control text-center qty-input" value="1" min="1">
+                <button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(this, 1)">＋</button>
+            </div>
             <form action="{{ url_for('shop_cart.add_to_cart') }}" method="post" class="mt-auto">
                 <input type="hidden" name="product_id" value="{{ product.id }}">
-                <input type="hidden" name="quantity" value="1">
+                <input type="hidden" name="quantity" value="1" id="qty-hidden">
                 <button class="btn btn-primary" style="position: relative; z-index: 1;">カートに追加</button>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+function changeQuantity(button, delta) {
+    const input = button.parentElement.querySelector('.qty-input');
+    const hidden = button.parentElement.parentElement.querySelector('.qty-hidden');
+
+    // 数量を増減
+    input.value = Math.max(1, Number(input.value) + delta);
+
+    // hidden に反映
+    hidden.value = input.value;
+}
+</script>
 {% endblock %}id

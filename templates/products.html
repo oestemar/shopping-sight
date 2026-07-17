@@ -14,13 +14,20 @@
                             <h5 class="card-title">{{ product.name }}</h5>
                             <span class="text-dark fw-bold">{{ product.price }}円</span>                                    
                             <p class="card-text text-truncate">{{ product.description }}</p>     
+                            <!-- 数量増減欄 -->
+                            <div class="input-group mb-3" style="max-width: 140px;">
+                                <button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(this, -1)">−</button>
+                                <input type="number" class="form-control text-center qty-input" name="quantity" value="1" min="1">
+                                <button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(this, 1)">＋</button>
+                            </div>
+
                             <a href="{{ url_for('shop_product_detail.product_detail', product_id=product.id) }}"
                                 class="stretched-link"></a>
                             
                             <div class="mt-auto">                                   
                                 <form action="{{ url_for('shop_cart.add_to_cart') }}" method="post" class="mt-auto">
                                     <input type="hidden" name="product_id" value="{{ product.id }}">
-                                    <input type="hidden" name="quantity" value="1">
+                                    <input type="hidden" name="quantity" value="1" class="qty-hidden">
                                     <button class="btn btn-primary" style="position: relative; z-index: 1;">カートに追加</button>
                                 </form>
                             </div>  
@@ -30,7 +37,16 @@
             {% endfor %}
         </div>
     </div>
+    <script>
+        function changeQuantity(button, delta) {
+            const cardBody = button.closest('.card-body');   // ★カード全体を基点にする
+            const input = cardBody.querySelector('.qty-input');
+            const hidden = cardBody.querySelector('.qty-hidden');
 
+            input.value = Math.max(1, Number(input.value) + delta);
+            hidden.value = input.value;
+        }    
+    </script>
 {% endblock %}
 
 

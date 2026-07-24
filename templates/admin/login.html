@@ -1,0 +1,22 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}管理者ログイン{% endblock %}
+
+{% block content %}
+  <section class="admin-login">
+    <h1>管理者ログイン</h1>
+    <form method="post" action="{{ url_for('auth.login') }}">
+      <div>
+        <label>メールアドレス<br>
+          <input type="email" name="email" required>
+        </label>
+      </div>
+      <div>
+        <label>パスワード<br>
+          <input type="password" name="password" required>
+        </label>
+      </div>
+      <button type="submit">ログイン</button>
+    </form>
+  </section>
+{% endblock %}

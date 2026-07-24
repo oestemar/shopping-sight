@@ -1,0 +1,30 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}ダッシュボード{% endblock %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">ユーザー一覧</h2>
+    <p>※ポートフォリオ用</p>
+ 
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>name</th>
+            <th>Email</th>
+            <th>日付</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.created_at }}</td>
+            <td>
+                <form action="{{ url_for('users.user_detail', user_id=user.id) }}" method="GET">
+                    <button type="submit" class="btn btn-primary">詳細</button>
+                </form>
+            </td>                    
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

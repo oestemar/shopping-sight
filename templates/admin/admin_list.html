@@ -1,0 +1,42 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}ダッシュボード{% endblock %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">管理者一覧</h2>
+    <p>※ポートフォリオ用</p>
+ 
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>日付</th>
+            <th>パスワード変更</th>
+            <th>削除</th>
+        </tr>
+        {% for admin in admins %}
+        <tr>
+            <td>{{ admin.id }}</td>
+            <td>{{ admin.email }}</td>
+            <td>{{ admin.role }}</td>
+            <td>{{ admin.created_at }}</td>
+            <td>
+                <form action="{{ url_for('admins.password_change', admin_id=admin.id) }}" method="GET">
+                    <button type="submit" class="btn btn-primary">パスワード変更</button>
+                </form>
+            </td>                    
+            <td>
+                <form action="{{ url_for('admins.admin_delete', admin_id=admin.id) }}" method="GET">
+                    <button type="submit" class="btn btn-danger">削除</button>
+                </form>
+            </td>                
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="admins-actions mt-3">
+        <form action="{{ url_for('admins.admin_add') }}" method="GET">
+            <button type="submit" class="btn btn-success">追加</button>
+        </form>        
+    </div>
+</div>
+{% endblock %}

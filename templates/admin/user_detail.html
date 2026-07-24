@@ -1,0 +1,36 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}ダッシュボード{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">{{ user.name }}の詳細</h2>
+    <p class="text-center">※ポートフォリオ用</p>
+    <div class="mx-auto w-50">
+        <div class="card p-4 shadow-sm">
+            <div class="row">
+                <div class="col-md-6">ID</div>
+                <div class="col-md-6">{{ user.id }}</div>        
+            </div>
+            <div class="row">
+                <div class="col-md-6">名前</div>
+                <div class="col-md-6">{{ user.name }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">Email</div>
+                <div class="col-md-6">{{ user.email }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">住所</div>
+                <div class="col-md-6">{{ user.address }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">Tel</div>
+                <div class="col-md-6">{{ user.phone }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">日付</div>
+                <div class="col-md-6">{{ user.created_at }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

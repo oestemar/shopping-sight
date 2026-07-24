@@ -1,0 +1,42 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}ダッシュボード{% endblock %}
+
+{% block content %}
+<section class="container py-4">
+
+  <h1 class="mb-4">管理者ダッシュボード</h1>
+
+  <div class="row g-4">
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-center">
+          <h5 class="card-title">商品数</h5>
+          <p class="display-6 fw-bold">{{ product_count }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-center">
+          <h5 class="card-title">注文数</h5>
+          <p class="display-6 fw-bold">{{ order_count }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-center">
+          <h5 class="card-title">ユーザー数</h5>
+          <p class="display-6 fw-bold">{{ user_count }}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+{% endblock %}

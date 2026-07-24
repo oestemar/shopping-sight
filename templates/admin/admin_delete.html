@@ -1,0 +1,32 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}管理者削除{% endblock %}
+
+{% block content %}
+<h2 class="text-center mt-3 mb-4">管理者削除</h2>
+
+    <div class="container col-md-4 mx-auto">
+        <h2 class="mb-4">管理者一覧</h2>
+        <p>本当にこの管理者を削除しますか？</p>
+        <p>※ポートフォリオ用</p>
+    
+        <table class="table table-bordered">
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>日付</th>
+            </tr>
+            <tr>
+                <td>{{ admin.id }}</td>
+                <td>{{ admin.email }}</td>
+                <td>{{ admin.role }}</td>
+                <td>{{ admin.created_at }}</td>
+            </tr>
+        </table>
+
+        <form action="{{ url_for('admins.admin_delete_action', admin_id=admin_id) }}" method="POST">
+            <button type="submit" class="btn btn-danger">削除する</button>
+            <a href="{{ url_for('admins.admin_list') }}" class="btn btn-secondary">戻る</a>
+        </form>
+    </div>
+{% endblock %}

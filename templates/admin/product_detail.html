@@ -1,0 +1,75 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="mx-auto w-50">
+        <div class="card p-4 shadow-sm">
+            <div class="row">
+                <div class="col-md-6">商品ID</div>
+                <div class="col-md-6">{{ product.id }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">商品名</div>
+                <div class="col-md-6">{{ product.name }}</div>        
+            </div>
+            <div class="row">
+                <div class="col-md-6">価格</div>
+                <div class="col-md-6">{{ product.price }}</div>        
+            </div>
+            <div class="row">
+                <div class="col-md-6">在庫数</div>
+                <div class="col-md-6">{{ product.stock }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">SKU</div>
+                <div class="col-md-6">{{ product.sku }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">ブランド</div>
+                <div class="col-md-6">{{ product.brand }}</div>
+            </div>         
+            <div class="row">
+                <div class="col-md-6">説明文</div>
+                <div class="col-md-6">{{ product.description }}</div>        
+            </div>
+            <div class="row">
+                <div class="col-md-6">カテゴリ</div>
+                <div class="col-md-6">{{ product.category.name }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">ステータス</div>
+                <div class="col-md-6">{{ product.status }}</div>
+            </div>
+
+            {% if spec %}
+            <h4>仕様</h4>
+            <div class="row">
+                {% for key, value in spec.items() %}
+                    <div class="col-sm-4 fw-bold">{{ key }}</div>
+                    <div class="col-sm-8">{{ value }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="mt-4">
+            <form action="{{ url_for('products.product_edit', product_id=product.id) }}" method="GET">
+                <button type="submit" class="btn btn-primary">編集</button>
+            </form>
+        </div>         
+    </div>
+</div>
+
+<script>
+function changeQuantity(button, delta) {
+    const input = button.parentElement.querySelector('.qty-input');
+    const hidden = button.parentElement.parentElement.querySelector('.qty-hidden');
+
+    // 数量を増減
+    input.value = Math.max(1, Number(input.value) + delta);
+
+    // hidden に反映
+    hidden.value = input.value;
+}
+</script>
+{% endblock %}id

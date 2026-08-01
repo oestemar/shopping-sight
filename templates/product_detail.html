@@ -5,53 +5,68 @@
 <div class="container mt-4">
     <div class="mx-auto w-50">
         <div class="card p-4 shadow-sm">
-            <h2>{{ product.name }}</h2>
-            <p class="fw-bold">{{ product.price }}円</p>
             <div class="row">
-                <div class="col-md-6">商品の説明</div>
-                <div class="col-md-6">{{ product.description }}</div>        
-            </div>
-            <div class="row">
-                <div class="col-md-6">カテゴリ</div>
-                <div class="col-md-6">{{ product.category.name }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">SKU</div>
-                <div class="col-md-6">{{ product.sku }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">ブランド</div>
-                <div class="col-md-6">{{ product.brand }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">状態</div>
-                <div class="col-md-6">{{ product.status }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">在庫数</div>
-                <div class="col-md-6">{{ product.stock }}</div>
-            </div>
-            {% if spec %}
-            <h4>仕様</h4>
-            <div class="row">
-                {% for key, value in spec.items() %}
-                    <div class="col-sm-4 fw-bold">{{ key }}</div>
-                    <div class="col-sm-8">{{ value }}</div>
-                {% endfor %}
-            </div>
-            {% endif %}
+                <div class="col-6 d-flex align-items-center justify-content-center">
+                    {% if product.images %}
+                        <img src="{{ product.images[0].image_url }}" 
+                        class="img-fluid" 
+                        style="max-height: 300px; object-fit: contain;">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/no_image.png') }}" 
+                        class="img-fluid" 
+                        style="max-height: 300px; object-fit: contain;">
+                    {% endif %}
+                </div>
+                <div class="col-6">    
+                    <h2>{{ product.name }}</h2>
+                    <p class="fw-bold">{{ product.price }}円</p>
+                    <div class="row">
+                        <div class="col-md-6">商品の説明</div>
+                        <div class="col-md-6">{{ product.description }}</div>        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">カテゴリ</div>
+                        <div class="col-md-6">{{ product.category.name }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">SKU</div>
+                        <div class="col-md-6">{{ product.sku }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">ブランド</div>
+                        <div class="col-md-6">{{ product.brand }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">状態</div>
+                        <div class="col-md-6">{{ product.status }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">在庫数</div>
+                        <div class="col-md-6">{{ product.stock }}</div>
+                    </div>
+                    {% if spec %}
+                    <h4>仕様</h4>
+                    <div class="row">
+                        {% for key, value in spec.items() %}
+                            <div class="col-sm-4 fw-bold">{{ key }}</div>
+                            <div class="col-sm-8">{{ value }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
 
-            <!-- 数量増減欄 -->
-            <div class="input-group mb-3" style="max-width: 160px;">
-                <button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(this, -1)">−</button>
-                <input type="number" id="qty" class="form-control text-center qty-input" value="1" min="1">
-                <button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(this, 1)">＋</button>
+                    <!-- 数量増減欄 -->
+                    <div class="input-group mb-3" style="max-width: 160px;">
+                        <button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(this, -1)">−</button>
+                        <input type="number" id="qty" class="form-control text-center qty-input" value="1" min="1">
+                        <button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(this, 1)">＋</button>
+                    </div>
+                    <form action="{{ url_for('shop_cart.add_to_cart') }}" method="post" class="mt-auto">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <input type="hidden" name="quantity" value="1" id="qty-hidden">
+                        <button class="btn btn-primary" style="position: relative; z-index: 1;">カートに追加</button>
+                    </form>
+                </div>
             </div>
-            <form action="{{ url_for('shop_cart.add_to_cart') }}" method="post" class="mt-auto">
-                <input type="hidden" name="product_id" value="{{ product.id }}">
-                <input type="hidden" name="quantity" value="1" id="qty-hidden">
-                <button class="btn btn-primary" style="position: relative; z-index: 1;">カートに追加</button>
-            </form>
         </div>
     </div>
 </div>

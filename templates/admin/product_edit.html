@@ -1,0 +1,93 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}商品編集{% endblock %}
+
+{% block content %}
+<div class="container col-md-5 mx-auto mt-2 mb-2">
+
+    <h2 class="mb-4">商品編集</h2>
+
+    <form action="{{ url_for('products.product_edit_action', product_id=product.id) }}"
+          method="POST"
+          enctype="multipart/form-data">
+
+        <div class="mb-3">
+            <label class="form-label">商品名</label>
+            <input type="text" name="name" class="form-control" value="{{ product.name }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">価格</label>
+            <input type="number" name="price" class="form-control" value="{{ product.price }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">在庫数</label>
+            <input type="number" name="stock" class="form-control" value="{{ product.stock }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">SKU</label>
+            <input type="text" name="sku" class="form-control" value="{{ product.sku }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">ブランド</label>
+            <input type="text" name="brand" class="form-control" value="{{ product.brand }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">説明文</label>
+            <textarea name="description" class="form-control" rows="5">{{ product.description }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">カテゴリー</label>
+            <select name="category_id" class="form-select">
+                {% for c in categories %}
+                <option value="{{ c.id }}" {% if product.category_id == c.id %}selected{% endif %}>
+                    {{ c.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">ステータス</label>
+            <select name="status" class="form-select">
+                <option value="1" {% if product.status == 1 %}selected{% endif %}>公開</option>
+                <option value="0" {% if product.status == 0 %}selected{% endif %}>非公開</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">仕様（JSON）</label>
+            <textarea name="spec_json" class="form-control" rows="5">
+                {{ product.spec_json | tojson }}
+            </textarea>
+        </div>
+
+        <hr>
+
+        <h4>既存画像</h4>
+        {% for img in product.images %}
+        <div class="mb-3">
+            <img src="{{ img.image_url }}" width="150" class="img-thumbnail">
+            <br>
+            <label class="form-label mt-2">並び順（sort_order）</label>
+            <input type="number" name="sort_order_{{ img.id }}" 
+                class="form-control" value="{{ img.sort_order }}">
+
+            <a href="{{ url_for('products.product_image_delete', image_id=img.id) }}"
+               class="btn btn-danger btn-sm">削除</a>
+        </div>
+        {% endfor %}
+
+        <hr>
+
+        <h4>画像を追加</h4>
+        <input type="file" name="images" multiple class="form-control">
+        <button type="submit" class="btn btn-primary mt-4">更新する</button>
+
+    </form>
+</div>
+{% endblock %}

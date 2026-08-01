@@ -4,13 +4,11 @@ from admin.routes_auth import admin_login_required
 from models import db
 from werkzeug.security import check_password_hash, generate_password_hash
 
-print("DEBUG: routes_admins loaded")
 admins_bp = Blueprint("admins", __name__)
 
 @admins_bp.route("/")
 @admin_login_required
 def admin_list():
-    print("DEBUG: admin_list() called")    
     admins = Admin.query.order_by(Admin.id).all()
     for admin in admins:
         print(admin.id)

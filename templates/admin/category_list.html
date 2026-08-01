@@ -1,0 +1,28 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}ダッシュボード{% endblock %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">カテゴリー一覧</h2>
+    <p>※ポートフォリオ用</p>
+ 
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Sort_Order</th>
+        </tr>
+        {% for category in categories %}
+        <tr>
+            <td>{{ category.id }}</td>
+            <td>{{ category.name }}</td>
+            <td>{{ category.sort_order }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="admins-actions mt-3">
+        <form action="{{ url_for('categories.category_add') }}" method="GET">
+            <button type="submit" class="btn btn-success">追加</button>
+        </form>        
+    </div>
+</div>
+{% endblock %}

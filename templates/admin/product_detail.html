@@ -4,6 +4,7 @@
 {% block content %}
 <div class="container mt-4">
     <div class="mx-auto w-50">
+        <h3 class="text-center">{{ product.name }}</h3>
         <div class="card p-4 shadow-sm">
             <div class="row">
                 <div class="col-md-6">商品ID</div>
@@ -52,6 +53,17 @@
             </div>
             {% endif %}
         </div>
+        <br>
+        <h4>既存画像</h4>
+        {% for img in product.images %}
+        <div class="mb-3">
+            <img src="{{ img.image_url }}" width="150" class="img-thumbnail">
+            <br>
+            <label class="form-label mt-2">並び順（sort_order）</label>
+            <input type="number" name="sort_order_{{ img.id }}" 
+                class="form-control" value="{{ img.sort_order }}">
+        </div>
+        {% endfor %}
         <div class="mt-4">
             <form action="{{ url_for('products.product_edit', product_id=product.id) }}" method="GET">
                 <button type="submit" class="btn btn-primary">編集</button>

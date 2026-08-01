@@ -6,16 +6,29 @@
     <div class="mx-auto w-50">
         <div class="card p-4 shadow-sm">
             <div class="row">
-                <div class="col-6 d-flex align-items-center justify-content-center">
-                    {% if product.images %}
-                        <img src="{{ product.images[0].image_url }}" 
-                        class="img-fluid" 
-                        style="max-height: 300px; object-fit: contain;">
-                    {% else %}
-                        <img src="{{ url_for('static', filename='images/no_image.png') }}" 
-                        class="img-fluid" 
-                        style="max-height: 300px; object-fit: contain;">
-                    {% endif %}
+                <div class="col-6">
+                    <!-- メイン画像 -->
+                    <div class="mb-3 text-center">
+                        {% if images|length > 0 %}
+                            <img id="main-image"
+                                src="{{ images[0].image_url }}"
+                                class="img-fluid"
+                                style="max-height: 300px; object-fit: contain;">
+                        {% else %}
+                            <img id="main-image"
+                                src="{{ url_for('static', filename='images/no_image.png') }}"
+                                class="img-fluid"
+                                style="max-height: 300px; object-fit: contain;">
+                        {% endif %}
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 justify-content-center">
+                        {% for img in images %}
+                            <img src="{{ img.image_url }}" 
+                            class="img-thumbnail mb-2" 
+                            style="width: 70px; height: 70px; object-fit: cover;"
+                            onclick="changeMainImage('{{ img.image_url }}')">
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="col-6">    
                     <h2>{{ product.name }}</h2>
@@ -72,6 +85,10 @@
 </div>
 
 <script>
+function changeMainImage(url) {
+    document.getElementById("main-image").src = url;
+}
+
 function changeQuantity(button, delta) {
     const input = button.parentElement.querySelector('.qty-input');
     const hidden = button.parentElement.parentElement.querySelector('.qty-hidden');

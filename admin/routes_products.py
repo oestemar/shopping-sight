@@ -40,7 +40,8 @@ def product_list():
 @admin_login_required
 def product_detail(product_id):
     product = Product.query.get_or_404(product_id)
-    return render_template("admin/product_detail.html", product=product)
+
+    return render_template("admin/product_detail.html", product=product, images=images)
 
 @products_bp.get("/edit/<int:product_id>")
 @admin_login_required

@@ -1,0 +1,85 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}注文一覧{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="mb-4">注文一覧</h2>
+    <p>※ポートフォリオ用</p>
+    <!-- 検索フォーム -->
+    <form method="GET" action="{{ url_for('orders.order_list') }}" class="row g-3 mb-4">
+
+        <!-- キーワード検索 -->
+        <div class="col-md-3">
+            <label class="form-label">キーワード（商品名 / SKU）</label>
+            <input type="text" name="q" class="form-control" value="{{ q }}">
+        </div>
+        <!-- 支払方法 -->
+        <div class="col-md-2">
+            <label class="form-label">支払方法</label>
+            <select name="payment_method" class="form-select">
+                <option value="">すべて</option>
+                <option value="stripe" {% if payment_method == "stripe" %}selected{% endif %}>Stripe</option>
+                <option value="qr" {% if payment_method == "qr" %}selected{% endif %}>QRコード</option>
+                <option value="paspo" {% if payment_method == "paspo" %}selected{% endif %}>PASMO</option>
+            </select>
+        </div>
+        <!-- ステータス -->
+        <div class="col-md-3">
+            <label class="form-label">ステータス</label>
+            <select name="status" class="form-select">
+                <option value="">すべて</option>
+                <option value="processing" {% if status == "processing" %}selected{% endif %}>処理中</option>
+                <option value="paid" {% if status == "paid" %}selected{% endif %}>支払い完了</option>
+                <option value="shipped" {% if status == "shipped" %}selected{% endif %}>発送済み</option>
+                <option value="completed" {% if status == "completed" %}selected{% endif %}>完了</option>
+                <option value="canceled" {% if status == "canceled" %}selected{% endif %}>キャンセル</option>
+                <option value="refunded" {% if status == "refunded" %}selected{% endif %}>返金</option>
+            </select>
+        </div>
+        <!-- 注文日 -->
+        <div class="col-md-2">
+            <label class="form-label">注文日</label>
+            <input type="date" name="created_at" class="form-control" value="{{ created_at }}"> 
+        </div>
+        <!-- 検索ボタン -->
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">検索</button>
+        </div>
+    </form> 
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>注文ID</th>
+                <th>顧客名</th>
+                <th>合計金額</th>
+                <th>支払い方法</th>
+                <th>ステータス</th>
+                <th>注文日時</th>
+                <th>詳細</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for order, user in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ "{:,}".format(order.total_amount) }}円</td>
+                <td>{{ order.payment_method }}</td>
+                <td>
+                    <span class="badge bg-primary">{{ order.status }}</span>
+                </td>
+                <td>{{ order.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+                <td>
+                    <a href="{{ url_for('orders.order_detail', order_id=order.id) }}" class="btn btn-sm btn-outline-secondary">
+                        詳細を見る
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

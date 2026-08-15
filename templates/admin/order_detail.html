@@ -1,0 +1,78 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}注文詳細{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">注文詳細</h2>
+
+    <!-- 注文情報 -->
+    <div class="card mb-4">
+        <div class="card-header">注文情報</div>
+        <div class="card-body">
+            <p><strong>注文ID:</strong> {{ order.id }}</p>
+            <p><strong>注文日時:</strong> {{ order.created_at.strftime("%Y-%m-%d %H:%M") }}</p>
+            <p><strong>ステータス:</strong> {{ order.status }}</p>
+            <p><strong>支払い方法:</strong> {{ order.payment_method }}</p>
+            <p><strong>合計金額:</strong> {{ "{:,}".format(order.total_amount) }}円</p>
+        </div>
+    </div>
+
+    <!-- 顧客情報 -->
+    <div class="card mb-4">
+        <div class="card-header">顧客情報</div>
+        <div class="card-body">
+            <p><strong>名前:</strong> {{ user.name }}</p>
+            <p><strong>メール:</strong> {{ user.email }}</p>
+            <p><strong>住所:</strong> {{ user.address }}</p>
+            <p><strong>電話番号:</strong> {{ user.phone }}</p>
+        </div>
+    </div>
+
+    <!-- 注文商品一覧 -->
+    <div class="card mb-4">
+        <div class="card-header">注文商品一覧</div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead clasexexs="table-light">
+                    <tr>
+                        <th>商品名</th>
+                        <th>数量</th>
+                        <th>価格（注文時）</th>
+                        <th>小計</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item, product in items %}
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ "{:,}".format(item.price_at_order) }}円</td>
+                        <td>{{ "{:,}".format(item.quantity * item.price_at_order) }}円</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-4">
+            <form action="{{ url_for('orders.order_update_status', order_id=order.id) }}" method="POST">
+                <label for="status" class="form-label">ステータス変更</label>
+                <select name="status" id="status" class="form-select">
+                    <option value="processing" {% if order.status == "processing" %}selected{% endif %}>processing</option>
+                    <option value="paid" {% if order.status == "paid" %}selected{% endif %}>paid</option>
+                    <option value="shipped" {% if order.status == "shipped" %}selected{% endif %}>shipped</option>
+                    <option value="completed" {% if order.status == "completed" %}selected{% endif %}>completed</option>
+                    <option value="canceled" {% if order.status == "canceled" %}selected{% endif %}>canceled</option>
+                    <option value="refunded" {% if order.status == "refunded" %}selected{% endif %}>refunded</option>
+                </select>
+                <button type="submit" class="btn btn-primary mt-2">ステータス更新</button>
+            </form>
+        </div>             
+    </div>
+
+    <a href="{{ url_for('orders.order_list') }}" class="btn btn-secondary">注文一覧に戻る</a>
+
+</div>
+
+{% endblock %}

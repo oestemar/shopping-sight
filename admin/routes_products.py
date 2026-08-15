@@ -7,6 +7,12 @@ from admin.routes_auth import admin_login_required
 import os
 from supabase_client import supabase
 import uuid
+import json
+import csv
+import io
+import zipfile
+import app
+from flask import current_app
 
 products_bp = Blueprint("products", __name__)
 
@@ -40,7 +46,7 @@ def product_list():
 @admin_login_required
 def product_detail(product_id):
     product = Product.query.get_or_404(product_id)
-
+    images = ProductImage.query.filter_by(product_id=product_id).order_by(ProductImage.sort_order.asc()).all()
     return render_template("admin/product_detail.html", product=product, images=images)
 
 @products_bp.get("/edit/<int:product_id>")
@@ -86,7 +92,9 @@ def product_edit_action(product_id):
     for img in images:
         if img.filename:
             # Supabase にアップロード（後で実装）
-            image_url = upload_to_supabase(img)
+            ext = img.filename.rsplit('.', 1)[-1].lower()
+            new_filename = f"{uuid.uuid4()}.{ext}"
+            image_url = upload_to_supabase_any(img.read(), new_filename, img.mimetype)
 
             new_img = ProductImage(
                 product_id=product.id,
@@ -105,6 +113,58 @@ def product_edit_action(product_id):
 
     return redirect(url_for("products.product_edit", product_id=product.id))
 
+@products_bp.get("/add")
+@admin_login_required
+def product_add():
+    categories = Category.query.all()
+    return render_template(
+        "admin/product_add.html", categories=categories
+    )
+
+@products_bp.post("/add")
+@admin_login_required
+def product_add_action():
+    product = Product(
+        name=request.form.get("name"),
+        price=request.form.get("price"),
+        stock=request.form.get("stock"),
+        sku=request.form.get("sku"),
+        brand=request.form.get("brand"),
+        description=request.form.get("description"),
+        category_id=request.form.get("category_id"),
+        status=request.form.get("status")
+    )
+
+    # JSON のパース
+    spec_json_raw = request.form.get("spec_json")
+    try:
+        product.spec_json = json.loads(spec_json_raw) if spec_json_raw else None
+    except:
+        flash("仕様（JSON）が不正です", "danger")
+
+    db.session.add(product)
+    db.session.commit()
+
+    # 新規画像アップロード
+    images = request.files.getlist("images")
+    for img in images:
+        if img.filename:
+            # Supabase にアップロード（後で実装）
+            ext = img.filename.rsplit('.', 1)[-1].lower()
+            new_filename = f"{uuid.uuid4()}.{ext}"
+            image_url = upload_to_supabase_any(img.read(), new_filename, img.mimetype)
+
+            new_img = ProductImage(
+                product_id=product.id,
+                image_url=image_url,
+                sort_order=0
+            )
+            db.session.add(new_img)
+
+    db.session.commit()
+
+    return redirect(url_for("products.product_list"))
+
 
 @products_bp.get("/image/delete/<int:image_id>")
 @admin_login_required
@@ -117,18 +177,115 @@ def product_image_delete(image_id):
 
     return redirect(url_for("products.product_edit", product_id=product_id))
 
-def upload_to_supabase(file):
-    bucket = os.getenv("SUPABASE_BUCKET")
+@products_bp.get("/import")
+@admin_login_required
+def product_import():
+    return render_template("admin/product_import.html")
 
-    ext = file.filename.split(".")[-1]
-    filename = f"{uuid.uuid4()}.{ext}"
-    file_bytes = file.read()
 
-    supabase.storage.from_(bucket).upload(
+@products_bp.post("/import")
+@admin_login_required
+def product_import_action():
+    csv_file = request.files.get("csv_file")
+    image_zip = request.files.get("image_zip")
+    print("ZIP FILE EXISTS:", image_zip is not None)
+
+    if not csv_file:
+        flash("CSVファイルが選択されていません", "danger")
+        return redirect(url_for("products.product_import"))
+
+    # ZIP画像を辞書に展開
+    image_dict = {}
+    if image_zip:
+        with zipfile.ZipFile(image_zip) as z:
+            print("ZIP CONTENTS:", z.namelist())
+            for filename in z.namelist():
+                image_dict[filename] = z.read(filename)
+                print("ZIP IMAGE READ:", filename, len(image_dict[filename]), "bytes")
+
+    # CSV読み込み
+    stream = io.StringIO(csv_file.stream.read().decode("utf-8"))
+    reader = csv.DictReader(stream)
+
+    for row in reader:
+        existing = Product.query.filter_by(sku=row['sku']).first()
+        print(existing.__dict__ if existing else "No existing product for SKU:", row['sku'])
+        for img in existing.images if existing else []:
+            db.session.delete(img)
+            db.session.commit()
+        if existing:
+            # UPDATE
+            product = existing
+            product.name = row['name']
+            product.price = row['price']
+            product.description = row['description']
+            product.category_id = row['category_id']
+            product.stock = row['stock']
+            product.brand = row['brand']
+            product.status = row['status']
+        else:
+            # 商品作成
+            product = Product(
+                name=row["name"],
+                price=row["price"],
+                stock=row["stock"],
+                sku=row["sku"],
+                brand=row["brand"],
+                description=row["description"],
+                category_id=row["category_id"],
+                status=row["status"]
+            )
+
+        # JSON仕様
+        if row.get("spec_json"):
+            try:
+                product.spec_json = json.loads(row["spec_json"])
+            except:
+                flash(f"JSONが不正です: {row['name']}", "danger")
+
+        db.session.add(product)
+        db.session.commit()  # product.id が確定
+        ProductImage.query.filter_by(product_id=product.id).delete()
+        db.session.commit()
+
+        # 画像登録
+        for key in ["image1", "image2", "image3"]:
+            print("キー：", key, "値：", row.get(key))
+            filename = row.get(key)
+            if filename and filename in image_dict:
+                print("アップロードされる画像：", filename)
+                # Supabaseへアップロード
+                image_bytes = image_dict[filename]
+                print("SUPABASE UPLOAD:", filename, len(image_bytes), "bytes")
+                ext = filename.rsplit('.', 1)[-1].lower()
+                new_filename = f"{uuid.uuid4()}.{ext}"
+                image_url = upload_to_supabase_any(image_bytes, new_filename, "image/png")
+
+                new_img = ProductImage(
+                    product_id=product.id,
+                    image_url=image_url,
+                    sort_order=0
+                )
+                print("DB INSERT:", product.id, image_url)                
+                db.session.add(new_img)
+
+        db.session.commit()
+
+    flash("CSVインポートが完了しました", "success")
+    return redirect(url_for("products.product_list"))
+
+def upload_to_supabase_any(bytes_data, filename, mime="image/png"):
+    bucket_name = os.getenv("SUPABASE_BUCKET")
+    supabase = current_app.supabase
+    bucket = supabase.storage.from_(bucket_name)
+
+    # 上書き許可してアップロード
+    res_upload = bucket.upload(
         filename,
-        file_bytes,
-        file_options={"content-type": file.mimetype}
+        bytes_data,
+        file_options={"content-type": mime},
     )
+    print("UPLOAD RESULT:", res_upload)
 
-    return supabase.storage.from_(bucket).get_public_url(filename)
+    return bucket.get_public_url(filename)
 

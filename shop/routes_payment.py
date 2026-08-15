@@ -4,6 +4,8 @@ from models.cart import Cart
 from models.order import Order
 from models.order_item import OrderItem
 from models import db
+from models.product import Product
+from models.inventory_history import InventoryHistory
 
 import os
 
@@ -130,6 +132,21 @@ def payment_success():
 #    print(f"Payment success for order_id: {order_id}")  # デバッグ用に出力
     order = Order.query.get(order_id)
     order.status = "paid"
+
+    for item in order.order_items:
+        product = Product.query.get(item.product_id)
+        product.stock -= item.quantity
+
+        # 履歴を残す
+        history = InventoryHistory(
+            product_id=product.id,
+            admin_id=0,  # または None
+            change=-item.quantity,
+            note="注文確定による在庫減少"
+        )
+
+        db.session.add(history)
+
     db.session.commit()
     return redirect(url_for("shop_complete.complete_success"))
 

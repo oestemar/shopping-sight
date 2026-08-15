@@ -22,11 +22,12 @@ from shop.routes_complete import shop_complete_bp
 from admin.routes_auth import auth_bp
 from admin.routes_products import products_bp
 from admin.routes_categories import categories_bp
-#from admin.routes_orders import orders_bp
+from admin.routes_orders import orders_bp
 from admin.routes_users import users_bp
 from admin.routes_admins import admins_bp
 #from admin.routes_images import images_bp
-#from admin.routes_inventory import inventory_bp
+from admin.routes_inventory import inventory_bp
+from supabase import create_client
 
 def create_app():
     load_dotenv()
@@ -48,12 +49,11 @@ def create_app():
     from models.order import Order
     from models.order_item import OrderItem
     from models.cart import Cart
+    from models.inventory_history import InventoryHistory
 
     with app.app_context():
-        db.session.query(Cart).delete()
-        db.session.commit()
-        print("Cart table cleared.")
-        
+        db.create_all()
+
     # Blueprint 登録
     app.register_blueprint(shop_register_bp)
     app.register_blueprint(shop_login_bp)
@@ -69,11 +69,11 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix="/admin")
     app.register_blueprint(products_bp, url_prefix="/admin/products")
     app.register_blueprint(categories_bp, url_prefix="/admin/categories")
-#    app.register_blueprint(orders_bp, url_prefix="/admin/orders")
+    app.register_blueprint(orders_bp, url_prefix="/admin/orders")
     app.register_blueprint(users_bp, url_prefix="/admin/users")
     app.register_blueprint(admins_bp, url_prefix="/admin/admins")
 #    app.register_blueprint(images_bp, url_prefix="/admin/images")
-#    app.register_blueprint(inventory_bp, url_prefix="/admin/inventory")
+    app.register_blueprint(inventory_bp, url_prefix="/admin/inventory")
 
     # 一時的に入れているデバッグコード下記２つ
     @app.before_request
@@ -120,6 +120,10 @@ def create_app():
             mimetype='image/vnd.microsoft.icon'
         )
 
+    app.supabase = create_client(
+        os.getenv("SUPABASE_URL"),
+        os.getenv("SUPABASE_KEY")
+    )
 
     return app
 

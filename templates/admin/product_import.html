@@ -1,0 +1,53 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}CSVインポート{% endblock %}
+
+{% block content %}
+<div class="container col-md-5 mx-auto mt-4">
+    <h2 class="mb-4">商品CSVインポート</h2>
+    <h4>CSVのフォーマット形式</h4>
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>列名</th>
+                <th>説明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>product_id</td><td>商品ID（新規登録時は空欄でOK）</td></tr>
+            <tr><td>name</td><td>商品名</td></tr>
+            <tr><td>price</td><td>価格</td></tr>
+            <tr><td>stock</td><td>在庫数</td></tr>
+            <tr><td>description</td><td>説明文</td></tr>
+            <tr><td>brand</td><td>ブランド名</td></tr>
+            <tr><td>category_id</td><td>カテゴリID</td></tr>
+            <tr><td>sku</td><td>SKUコード</td></tr>
+            <tr><td>status</td><td>公開(1) / 非公開(0)</td></tr>
+            <tr><td>spec_json</td><td>仕様（JSON形式）</td></tr>
+            <tr><td>image1</td><td>画像ファイル名（ZIP内と一致）</td></tr>
+            <tr><td>image2</td><td>画像ファイル名（任意）</td></tr>
+            <tr><td>image3</td><td>画像ファイル名（任意）</td></tr>
+        </tbody>
+    </table>    
+    <br>
+
+    <form action="{{ url_for('products.product_import_action') }}"
+          method="POST"
+          enctype="multipart/form-data">
+
+        <h4>CSVファイル選択</h4>
+        <div class="mb-3">
+            <input type="file" name="csv_file" class="form-control" accept=".csv" required>
+        </div>
+
+        <h4>画像フォルダ選択（任意）</h4>
+        <div class="mb-3">
+            <input type="file" name="image_zip" class="form-control" accept=".zip">
+            <small class="text-muted">画像ファイル名とCSVの image1,image2,image3 を一致させてください。</small>
+        </div>
+
+        <button class="btn btn-primary mt-3">インポートする</button>
+
+    </form>
+
+</div>
+{% endblock %}

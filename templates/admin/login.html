@@ -1,22 +1,32 @@
 {% extends "admin/admin_base.html" %}
-
 {% block title %}管理者ログイン{% endblock %}
 
 {% block content %}
-  <section class="admin-login">
-    <h1>管理者ログイン</h1>
-    <form method="post" action="{{ url_for('auth.login') }}">
-      <div>
-        <label>メールアドレス<br>
-          <input type="email" name="email" required>
-        </label>
-      </div>
-      <div>
-        <label>パスワード<br>
-          <input type="password" name="password" required>
-        </label>
-      </div>
-      <button type="submit">ログイン</button>
-    </form>
-  </section>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <h2 class="mb-4">管理者ログイン</h2>
+
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+
+            <form method="post" action="{{ url_for('auth.login') }}">
+                <div class="mb-3">
+                    <label class="form-label">メールアドレス</label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">パスワード</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">ログイン</button>
+            </form>
+
+        </div>
+    </div>
+</div>
 {% endblock %}

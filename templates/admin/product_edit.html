@@ -78,7 +78,7 @@
                 class="form-control" value="{{ img.sort_order }}">
 
             <a href="{{ url_for('products.product_image_delete', image_id=img.id) }}"
-               class="btn btn-danger btn-sm">削除</a>
+               class="btn btn-outline-danger btn-sm">削除</a>
         </div>
         {% endfor %}
 
@@ -86,7 +86,7 @@
 
         <h4>画像を追加</h4>
         <input type="file" name="images" multiple class="form-control">
-        <button type="submit" class="btn btn-primary mt-4">更新する</button>
+        <button type="submit" class="btn btn-outline-primary mt-4">更新する</button>
 
     </form>
 </div>

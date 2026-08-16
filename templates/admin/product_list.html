@@ -1,79 +1,82 @@
 {% extends "admin/admin_base.html" %}
 {% block title %}ダッシュボード{% endblock %}
 {% block content %}
-<div class="container">
-    <h2 class="mb-4">商品一覧</h2>
-    <p>※ポートフォリオ用</p>
-    <!-- 検索フォーム -->
-    <form method="GET" action="{{ url_for('products.product_list') }}" class="row g-3 mb-4">
+<div class="container">    
+    <div class="mx-auto" style="max-width: 60%;">
+        <h2 class="mb-4">商品一覧</h2>
+        <p>※ポートフォリオ用</p>
+        <!-- 検索フォーム -->
+        <form method="GET" action="{{ url_for('products.product_list') }}" class="row g-3 mb-4">
 
-        <!-- キーワード検索 -->
-        <div class="col-md-4">
-            <label class="form-label">キーワード（商品名 / SKU）</label>
-            <input type="text" name="q" class="form-control" value="{{ q }}">
+            <!-- キーワード検索 -->
+            <div class="col-md-4">
+                <label class="form-label">キーワード（商品名 / SKU）</label>
+                <input type="text" name="q" class="form-control" value="{{ q }}">
+            </div>
+
+            <!-- ステータス -->
+            <div class="col-md-3">
+                <label class="form-label">ステータス</label>
+                <select name="status" class="form-select">
+                    <option value="">すべて</option>
+                    <option value="active" {% if status == "active" %}selected{% endif %}>公開</option>
+                    <option value="inactive" {% if status == "inactive" %}selected{% endif %}>非公開</option>
+                </select>
+            </div>
+
+            <!-- カテゴリー -->
+            <div class="col-md-3">
+                <label class="form-label">カテゴリー</label>
+                <select name="category_id" class="form-select">
+                    <option value="">すべて</option>
+                    {% for category in categories %}
+                    <option value="{{ category.id }}" {% if category_id == category.id|string %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- 検索ボタン -->
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">検索</button>
+            </div>
+        </form> 
+        <!-- 商品一覧 -->
+        <table class="table table-bordered">
+            <tr>
+                <th>ID</th>
+                <th>商品名</th>
+                <th>値段</th>
+                <th>ステータス</th>
+                <th>カテゴリー</th>
+                <th>編集</th>
+            </tr>
+
+            {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.status }}</td>
+                <td>{{ product.category.name if product.category }}</td>
+                <td>
+                    <form action="{{ url_for('products.product_detail', product_id=product.id) }}" method="GET">
+                        <button type="submit" class="btn btn-sm btn-outline-primary">詳細</button>
+                    </form>
+                </td> 
+            </tr>
+            {% endfor %}
+        </table>
+        <div class="d-flex mt-4 gap-2 mb-4">
+            <form action="{{ url_for('products.product_add') }}" method="GET">
+                <button type="submit" class="btn btn-sm btn-outline-primary">追加</button>
+            </form>
+            <form action="{{ url_for('products.product_import') }}" method="GET">
+                <button type="submit" class="btn btn-sm btn-outline-primary">CSVインポート</button>
+            </form>
         </div>
-
-        <!-- ステータス -->
-        <div class="col-md-3">
-            <label class="form-label">ステータス</label>
-            <select name="status" class="form-select">
-                <option value="">すべて</option>
-                <option value="active" {% if status == "active" %}selected{% endif %}>公開</option>
-                <option value="inactive" {% if status == "inactive" %}selected{% endif %}>非公開</option>
-            </select>
-        </div>
-
-        <!-- カテゴリー -->
-        <div class="col-md-3">
-            <label class="form-label">カテゴリー</label>
-            <select name="category_id" class="form-select">
-                <option value="">すべて</option>
-                {% for category in categories %}
-                <option value="{{ category.id }}" {% if category_id == category.id|string %}selected{% endif %}>
-                    {{ category.name }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <!-- 検索ボタン -->
-        <div class="col-md-2 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary w-100">検索</button>
-        </div>
-    </form> 
-    <!-- 商品一覧 -->
-    <table class="table table-bordered">
-        <tr>
-            <th>ID</th>
-            <th>商品名</th>
-            <th>値段</th>
-            <th>ステータス</th>
-            <th>カテゴリー</th>
-            <th>編集</th>
-        </tr>
-
-        {% for product in products %}
-        <tr>
-            <td>{{ product.id }}</td>
-            <td>{{ product.name }}</td>
-            <td>{{ product.price }}</td>
-            <td>{{ product.status }}</td>
-            <td>{{ product.category.name if product.category }}</td>
-            <td>
-                <form action="{{ url_for('products.product_detail', product_id=product.id) }}" method="GET">
-                    <button type="submit" class="btn btn-primary">詳細</button>
-                </form>
-            </td> 
-        </tr>
-        {% endfor %}
-    </table>
-    <div class="d-flex mt-4 gap-2 mb-4">
-        <form action="{{ url_for('products.product_add') }}" method="GET">
-            <button type="submit" class="btn btn-primary">追加</button>
-        </form>
-        <form action="{{ url_for('products.product_import') }}" method="GET">
-            <button type="submit" class="btn btn-primary">CSVインポート</button>
-        </form>
     </div>
+</div>
 
 {% endblock %}

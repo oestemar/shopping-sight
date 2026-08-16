@@ -12,4 +12,4 @@ class Order(db.Model):
     status = db.Column(db.String(20), nullable=False, default="processing")
     created_at = db.Column(db.DateTime, default=datetime.now)
 
-    items = db.relationship("OrderItem", backref="order", lazy=True)
+    order_items = db.relationship("OrderItem", backref="order", lazy=True)

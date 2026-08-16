@@ -25,8 +25,8 @@
         </table>
 
         <form action="{{ url_for('admins.admin_delete_action', admin_id=admin_id) }}" method="POST">
-            <button type="submit" class="btn btn-danger">削除する</button>
-            <a href="{{ url_for('admins.admin_list') }}" class="btn btn-secondary">戻る</a>
+            <button type="submit" class="btn btn-outline-danger">削除する</button>
+            <a href="{{ url_for('admins.admin_list') }}" class="btn btn-outline-primary">戻る</a>
         </form>
     </div>
 {% endblock %}

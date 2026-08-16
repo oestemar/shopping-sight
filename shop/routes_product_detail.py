@@ -17,8 +17,8 @@ def product_detail(product_id):
 
     spec = None
     if product.spec_json:
-        spec = json.loads(product.spec_json)
-    
+        spec = product.spec_json or {}
+
     return render_template(
         "product_detail.html", 
         product=product,

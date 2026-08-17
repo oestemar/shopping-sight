@@ -3,7 +3,8 @@ from models.product import Product
 from models.image import ProductImage
 from models.category import Category
 from models import db
-from admin.routes_auth import admin_login_required
+from admin.routes_auth import admin_login_required, get_current_admin
+from admin.routes_auth import role_required
 import os
 from supabase_client import supabase
 import uuid
@@ -18,6 +19,7 @@ products_bp = Blueprint("products", __name__)
 
 @products_bp.route("/")
 @admin_login_required
+@role_required(1, 2, 3)
 def product_list():
     q = request.args.get("q", "").strip()
     status = request.args.get("status", "")
@@ -44,6 +46,7 @@ def product_list():
 
 @products_bp.route("/<int:product_id>")
 @admin_login_required
+@role_required(1, 2, 3)
 def product_detail(product_id):
     product = Product.query.get_or_404(product_id)
     images = ProductImage.query.filter_by(product_id=product_id).order_by(ProductImage.sort_order.asc()).all()
@@ -51,6 +54,7 @@ def product_detail(product_id):
 
 @products_bp.get("/edit/<int:product_id>")
 @admin_login_required
+@role_required(1, 2, 3)
 def product_edit(product_id):
     product = Product.query.get_or_404(product_id)
     
@@ -63,6 +67,7 @@ def product_edit(product_id):
 
 @products_bp.post("/edit/<int:product_id>")
 @admin_login_required
+@role_required(2, 3)
 def product_edit_action(product_id):
 
     print("DEBUG: product_edit_action POST received")
@@ -115,6 +120,7 @@ def product_edit_action(product_id):
 
 @products_bp.get("/add")
 @admin_login_required
+@role_required(1, 2, 3)
 def product_add():
     categories = Category.query.all()
     return render_template(
@@ -123,6 +129,7 @@ def product_add():
 
 @products_bp.post("/add")
 @admin_login_required
+@role_required(2, 3)
 def product_add_action():
     product = Product(
         name=request.form.get("name"),
@@ -168,6 +175,7 @@ def product_add_action():
 
 @products_bp.get("/image/delete/<int:image_id>")
 @admin_login_required
+@role_required(2, 3)
 def product_image_delete(image_id):
     img = ProductImage.query.get_or_404(image_id)
     product_id = img.product_id
@@ -179,12 +187,14 @@ def product_image_delete(image_id):
 
 @products_bp.get("/import")
 @admin_login_required
+@role_required(1, 2, 3)
 def product_import():
     return render_template("admin/product_import.html")
 
 
 @products_bp.post("/import")
 @admin_login_required
+@role_required(2, 3)
 def product_import_action():
     csv_file = request.files.get("csv_file")
     image_zip = request.files.get("image_zip")

@@ -4,14 +4,15 @@ from models.order_item import OrderItem
 from models.product import Product
 from models.user import User
 from models import db
-from admin.routes_auth import admin_login_required
+from admin.routes_auth import role_required
 from models.inventory_history import InventoryHistory
-from admin.routes_auth import get_current_admin
+from admin.routes_auth import admin_login_required ,get_current_admin
 
 orders_bp = Blueprint("orders", __name__)
 
 @orders_bp.route("/")
 @admin_login_required
+@role_required(1, 2, 3)
 def order_list():
     q = request.args.get("q", "")
     payment_method = request.args.get("payment_method", "")
@@ -45,6 +46,7 @@ def order_list():
 
 @orders_bp.get("/<int:order_id>")
 @admin_login_required
+@role_required(1, 2, 3)
 def order_detail(order_id):
     order = Order.query.get_or_404(order_id)
     user = order.user
@@ -64,6 +66,7 @@ def order_detail(order_id):
 
 @orders_bp.post("/update_status/<int:order_id>")
 @admin_login_required
+@role_required(2, 3)
 def order_update_status(order_id):
     order = Order.query.get_or_404(order_id)
     status = request.form.get("status", order.status)

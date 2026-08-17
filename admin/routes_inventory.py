@@ -2,15 +2,16 @@ from datetime import datetime
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.product import Product
 from models.inventory_history import InventoryHistory
-from .routes_auth import admin_login_required, get_current_admin
+from admin.routes_auth import admin_login_required, get_current_admin
 from models import db
-from admin.routes_auth import admin_login_required
+from admin.routes_auth import role_required
 
 inventory_bp = Blueprint("inventory", __name__, template_folder="templates")
 
 
 @inventory_bp.route("/")
 @admin_login_required
+@role_required(1, 2, 3)
 def inventory_list():
     products = Product.query.order_by(Product.name).all()
     return render_template("admin/inventory/list.html", products=products)
@@ -18,6 +19,7 @@ def inventory_list():
 
 @inventory_bp.route("/update/<int:product_id>", methods=["POST"])
 @admin_login_required
+@role_required(2, 3)
 def inventory_update(product_id):
     product = Product.query.get_or_404(product_id)
     change = int(request.form.get("change", 0))
@@ -45,6 +47,7 @@ def inventory_update(product_id):
 
 @inventory_bp.route("/history")
 @admin_login_required
+@role_required(1, 2, 3)
 def inventory_history():
     histories = InventoryHistory.query.order_by(InventoryHistory.created_at.desc()).limit(200).all()
     return render_template("admin/inventory/history.html", histories=histories)

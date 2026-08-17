@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
+from admin.routes_auth import role_required
 from admin.routes_auth import admin_login_required
 from models.category import Category
 from models import db
@@ -7,17 +8,20 @@ categories_bp = Blueprint("categories", __name__)
 
 @categories_bp.get("/")
 @admin_login_required
+@role_required(1, 2, 3)
 def category_list():
     categories = Category.query.order_by(Category.id).all()
     return render_template("admin/category_list.html", categories=categories)
 
 @categories_bp.get("/add")
 @admin_login_required
+@role_required("demo_admin", "admin", "super")
 def category_add():
     return render_template("admin/category_add.html")
 
 @categories_bp.post("/add")
 @admin_login_required
+@role_required(2, 3)
 def category_add_action():
     """カテゴリー追加"""
     try:

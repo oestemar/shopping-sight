@@ -140,7 +140,7 @@ def payment_success():
         # 履歴を残す
         history = InventoryHistory(
             product_id=product.id,
-            admin_id=0,  # または None
+            admin_id=None,  # または None
             change=-item.quantity,
             note="注文確定による在庫減少"
         )

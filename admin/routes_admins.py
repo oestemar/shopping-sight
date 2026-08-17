@@ -1,12 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from models.admin import Admin
-from admin.routes_auth import admin_login_required
+from admin.routes_auth import role_required
 from models import db
 from werkzeug.security import check_password_hash, generate_password_hash
+from admin.routes_auth import admin_login_required
 
 admins_bp = Blueprint("admins", __name__)
 
 @admins_bp.route("/")
+@role_required(1, 2, 3)
 @admin_login_required
 def admin_list():
     admins = Admin.query.order_by(Admin.id).all()
@@ -15,11 +17,13 @@ def admin_list():
     return render_template("admin/admin_list.html", admins=admins)
 
 @admins_bp.get("/password/<int:admin_id>")
+@role_required(3)
 @admin_login_required
 def password_change(admin_id):
     return render_template("admin/admin_password.html", admin_id=admin_id)
 
 @admins_bp.post("/password")
+@role_required(3)
 @admin_login_required
 def password_change_action():
     """パスワード変更"""
@@ -60,11 +64,13 @@ def password_change_action():
         return render_template('admin/admin_error.html', message=str(e))
 
 @admins_bp.get("/add")
+@role_required(3)
 @admin_login_required
 def admin_add():
     return render_template("admin/admin_add.html")
 
 @admins_bp.post("/add")
+@role_required(3)
 @admin_login_required
 def admin_add_action():
     """管理者追加"""
@@ -97,12 +103,14 @@ def admin_add_action():
         return render_template("admin/admin_error.html", message=str(e))
 
 @admins_bp.get("/delete/<int:admin_id>")
+@role_required(3)
 @admin_login_required
 def admin_delete(admin_id):
     admin = Admin.query.get(admin_id)
     return render_template("admin/admin_delete.html",admin=admin ,admin_id=admin_id)
 
 @admins_bp.post("/delete/<int:admin_id>")
+@role_required(3)
 @admin_login_required
 def admin_delete_action(admin_id):
     """管理者削除"""

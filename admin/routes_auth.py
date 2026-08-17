@@ -5,8 +5,25 @@ from models.admin import Admin
 from models.product import Product
 from models.order import Order
 from models.user import User
+from flask import abort
 
 auth_bp = Blueprint("auth", __name__)
+
+def role_required(*roles):
+    def decorator(view):
+        @wraps(view)
+        def wrapped(*args, **kwargs):
+            admin_id = session.get("admin_id")
+            if not admin_id:
+                abort(403)
+
+            admin = Admin.query.get(admin_id)
+            if admin.role not in roles:
+                abort(403)
+
+            return view(*args, **kwargs)
+        return wrapped
+    return decorator
 
 
 def admin_login_required(view):
@@ -43,6 +60,7 @@ def logout():
 @auth_bp.route("/")
 @auth_bp.route("/dashboard")
 @admin_login_required
+@role_required(1, 2, 3)
 def dashboard():
     print("DEBUG: dashboard() reached")
     product_count = Product.query.count()

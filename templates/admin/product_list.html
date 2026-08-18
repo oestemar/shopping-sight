@@ -17,11 +17,12 @@
             <!-- ステータス -->
             <div class="col-md-3">
                 <label class="form-label">ステータス</label>
-                <select name="status" class="form-select">
-                    <option value="">すべて</option>
-                    <option value="active" {% if status == "active" %}selected{% endif %}>公開</option>
-                    <option value="inactive" {% if status == "inactive" %}selected{% endif %}>非公開</option>
-                </select>
+            <select name="status" class="form-select">
+                <option value="">すべて</option>
+                <option value="1">販売中</option>
+                <option value="2">売り切れ</option>
+                <option value="3">販売停止</option>
+            </select>
             </div>
 
             <!-- カテゴリー -->
@@ -58,7 +59,11 @@
                 <td>{{ product.id }}</td>
                 <td>{{ product.name }}</td>
                 <td>{{ product.price }}</td>
-                <td>{{ product.status }}</td>
+                <td>
+                    {% if product.status == 1 %}販売中{% endif %}
+                    {% if product.status == 2 %}売り切れ{% endif %}
+                    {% if product.status == 3 %}販売停止{% endif %}
+                </td>
                 <td>{{ product.category.name if product.category }}</td>
                 <td>
                     <form action="{{ url_for('products.product_detail', product_id=product.id) }}" method="GET">

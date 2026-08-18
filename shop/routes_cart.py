@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 from models.product import Product
 from models.cart import Cart
 from models import db
+from flask import flash
 
 shop_cart_bp = Blueprint("shop_cart", __name__, url_prefix="/cart")
 
@@ -35,6 +36,11 @@ def add_to_cart():
     product_id = int(request.form.get("product_id"))
     quantity = int(request.form.get("quantity", 1))
     print(f"Product ID: {product_id}, Quantity: {quantity}")  # デバッグ用にデータを出力
+    product = Product.query.get(product_id)
+    # ★ 売り切れチェック（例：status が "soldout" の場合）
+    if product.status == 2:
+        flash("この商品は売り切れです", "error")
+        return redirect(request.referrer)
 
     # 既にカートにあるか確認
     cart_item = Cart.query.filter_by(user_id=user_id, product_id=product_id).first()

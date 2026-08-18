@@ -15,7 +15,7 @@ def category_list():
 
 @categories_bp.get("/add")
 @admin_login_required
-@role_required("demo_admin", "admin", "super")
+@role_required(1, 2, 3)
 def category_add():
     return render_template("admin/category_add.html")
 

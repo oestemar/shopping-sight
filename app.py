@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 import traceback
 from flask import send_from_directory
+from flask import render_template
 
 from models import db
 
@@ -124,6 +125,10 @@ def create_app():
         os.getenv("SUPABASE_URL"),
         os.getenv("SUPABASE_KEY")
     )
+
+    @app.errorhandler(403)
+    def page_not_found(e):
+        return render_template('admin/admin_error403.html'), 403
 
     return app
 

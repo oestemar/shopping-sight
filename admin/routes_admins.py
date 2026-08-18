@@ -4,6 +4,7 @@ from admin.routes_auth import role_required
 from models import db
 from werkzeug.security import check_password_hash, generate_password_hash
 from admin.routes_auth import admin_login_required
+from flask import session, flash
 
 admins_bp = Blueprint("admins", __name__)
 
@@ -79,11 +80,16 @@ def admin_add_action():
         password = request.form.get("password")
         role = request.form.get("role")
 
-        if not email or not password:
+        if not email or not password or not role:
             return render_template(
                 "admin/admin_add.html",
-                error="メールアドレスとパスワードは必須です"
+                error="メールアドレスとパスワードと権限は必須です"
             )
+
+        if "@" not in email:
+            flash("メールアドレスの形式が正しくありません", "error")
+            return redirect("/register")
+
 
         # パスワードハッシュ化
         password_hash = generate_password_hash(password)

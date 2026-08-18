@@ -54,8 +54,9 @@
         <div class="mb-3">
             <label class="form-label">ステータス</label>
             <select name="status" class="form-select">
-                <option value="1" {% if product.status == 1 %}selected{% endif %}>公開</option>
-                <option value="0" {% if product.status == 0 %}selected{% endif %}>非公開</option>
+                <option value="1" {% if product.status == 1 %}selected{% endif %}>販売中</option>
+                <option value="2" {% if product.status == 2 %}selected{% endif %}>売り切れ</option>
+                <option value="3" {% if product.status == 3 %}selected{% endif %}>販売停止</option>
             </select>
         </div>
 

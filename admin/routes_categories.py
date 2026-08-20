@@ -13,6 +13,30 @@ def category_list():
     categories = Category.query.order_by(Category.id).all()
     return render_template("admin/category_list.html", categories=categories)
 
+@categories_bp.get("/edit/<int:category_id>")
+@admin_login_required
+@role_required(1, 2, 3)
+def category_edit(category_id):
+    category = Category.query.get_or_404(category_id)
+    return render_template("admin/category_edit.html", category=category)
+
+@categories_bp.post("/edit/<int:category_id>")
+@admin_login_required
+@role_required(2, 3)
+def category_edit_action(category_id):
+
+    print("DEBUG: category_edit_action POST received")
+
+    category = Category.query.get_or_404(category_id)
+
+    category.name = request.form.get("name")
+    category.status = request.form.get("status")
+    category.sort_order = request.form.get("sort_order")
+
+    db.session.commit()
+
+    return redirect(url_for("categories.category_edit", category_id=category.id))
+
 @categories_bp.get("/add")
 @admin_login_required
 @role_required(1, 2, 3)
@@ -26,6 +50,7 @@ def category_add_action():
     """カテゴリー追加"""
     try:
         name = request.form.get("name")
+        status = request.form.get("status")
         sort_order = request.form.get("sort_order")
 
         if not name or not sort_order:
@@ -36,6 +61,7 @@ def category_add_action():
 
         new_category = Category(
             name=name,
+            status=status,
             sort_order=sort_order
         )
 

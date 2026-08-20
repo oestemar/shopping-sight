@@ -13,16 +13,19 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6 d-flex align-items-center justify-content-center">
-                                    {% if product.images %}
-                                        <img src="{{ product.images[0].image_url }}" 
-                                        class="card-img-top" 
-                                        style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                                    {% set sorted_images = product.images | sort(attribute='sort_order') %}
+                                    {% if sorted_images %}
+                                        <img src="{{ sorted_images[0].image_url }}"
+                                            class="card-img-top"
+                                            style="max-height: 100%; max-width: 100%; object-fit: contain;">
                                     {% else %}
-                                        <img src="{{ url_for('static', filename='images/no_image.png') }}" 
-                                        class="card-img-top" 
-                                        style="max-height: 100%; max-width: 100%; object-fit: contain;">
-                                    {% endif %} 
+                                        <img src="{{ url_for('static', filename='images/no_image.png') }}"
+                                            class="card-img-top"
+                                            style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                                    {% endif %}
+
                                 </div>
+
                                 <div class="col-6">
                                     <h5 class="card-title">{{ product.name }}</h5>
                                     <span class="text-dark fw-bold">{{ product.price }}円</span>                                    

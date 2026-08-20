@@ -109,6 +109,15 @@ def create_app():
         user = User.query.get(user_id)
         return dict(login_user=user)
 
+    @app.context_processor
+    def inject_admin():
+        admin_id = session.get("admin_id")
+        if not admin_id:
+            return dict(login_admin=None)
+
+        admin = Admin.query.get(admin_id)
+        return dict(login_admin=admin)
+
     @app.get("/")  
     def index():
         return redirect("/shop/menu")

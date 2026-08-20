@@ -33,6 +33,7 @@ def product_list():
         query = query.filter_by(status=status)
     if category_id.isdigit():
         query = query.filter_by(category_id=int(category_id))
+
     products = query.all()
     categories = Category.query.order_by(Category.name).all()
     return render_template(

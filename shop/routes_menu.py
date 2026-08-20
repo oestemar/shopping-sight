@@ -6,6 +6,10 @@ shop_menu_bp = Blueprint("shop_menu", __name__)
 # ==================== メニュー関連ルート ====================
 @shop_menu_bp.get("/")
 def menu():
-    categories = Category.query.all()
+    categories = Category.query.filter(
+        Category.status == 1
+    ).order_by(
+        Category.sort_order.asc()
+    ).all()
     return render_template("menu.html", categories=categories)
 

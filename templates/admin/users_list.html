@@ -2,16 +2,17 @@
 {% block title %}ダッシュボード{% endblock %}
 {% block content %}
 <div class="container">
-    <div class="mx-auto" style="max-width: 60%;">
+    <div class="mx-auto" style="max-width: 100%;">
         <h2 class="mb-4">ユーザー一覧</h2>
         <p>※ポートフォリオ用</p>
     
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <tr>
                 <th>ID</th>
                 <th>name</th>
                 <th>Email</th>
                 <th>日付</th>
+                <th>詳細</th>
             </tr>
             {% for user in users %}
             <tr>
@@ -21,7 +22,7 @@
                 <td>{{ user.created_at }}</td>
                 <td>
                     <form action="{{ url_for('users.user_detail', user_id=user.id) }}" method="GET">
-                        <button type="submit" class="btn btn-sm btn-outline-primary">詳細</button>
+                        <button type="submit" class="btn btn-sm btn-outline-dark">詳細</button>
                     </form>
                 </td>                    
             </tr>

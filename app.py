@@ -44,7 +44,6 @@ def create_app():
     from models.user import User
     from models.admin import Admin
     from models.category import Category
-    from models.category_image import CategoryImage
     from models.product import Product
     from models.image import ProductImage
     from models.order import Order

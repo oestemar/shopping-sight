@@ -32,9 +32,9 @@
                                     <p class="card-text text-truncate">{{ product.description }}</p>     
                                     <!-- 数量増減欄 -->
                                     <div class="input-group mb-3" style="max-width: 140px;">
-                                        <button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(this, -1)">−</button>
+                                        <button class="btn btn-outline-secondary text-dark" type="button" onclick="changeQuantity(this, -1)">−</button>
                                         <input type="number" class="form-control text-center qty-input" name="quantity" value="1" min="1">
-                                        <button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(this, 1)">＋</button>
+                                        <button class="btn btn-outline-secondary text-dark" type="button" onclick="changeQuantity(this, 1)">＋</button>
                                     </div>
                                     <a href="{{ url_for('shop_product_detail.product_detail', product_id=product.id) }}"
                                         class="stretched-link"></a>
@@ -43,7 +43,7 @@
                                         <form action="{{ url_for('shop_cart.add_to_cart') }}" method="post" class="mt-auto">
                                             <input type="hidden" name="product_id" value="{{ product.id }}">
                                             <input type="hidden" name="quantity" value="1" class="qty-hidden">
-                                            <button class="btn btn-primary" style="position: relative; z-index: 1;">カートに追加</button>
+                                            <button class="btn btn-dark" style="position: relative; z-index: 1;">カートに追加</button>
                                         </form>
                                     </div>  
                                 </div>

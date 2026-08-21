@@ -23,7 +23,7 @@
                     <td>
                         <form action="{{ url_for('shop_cart.remove_from_cart') }}" method="POST">
                             <input type="hidden" name="item_id" value="{{ cart_item.id }}">
-                            <button type="submit" class="btn btn-primary pay-operation-delete">削除</button>
+                            <button type="submit" class="btn btn-dark pay-operation-delete">削除</button>
                         </form>
                     </td>
                 </tr>
@@ -52,8 +52,8 @@
     </div>
     {% endif %}
     <div class="pay-operation-actions">
-        <a href="/shop/menu" class="btn btn-primary btn-next">← メニューに戻る</a>
-        <a href="/shop/checkout" class="btn btn-primary btn-next">精算へ進む</a>
+        <a href="/shop/menu" class="btn btn-dark btn-next">← メニューに戻る</a>
+        <a href="/shop/checkout" class="btn btn-dark btn-next">精算へ進む</a>
     </div>
 </div>
 {% endblock %}

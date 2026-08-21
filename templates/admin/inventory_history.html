@@ -1,0 +1,49 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}在庫履歴一覧{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">在庫履歴一覧</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>商品名</th>
+                <th>変更数</th>
+                <th>理由</th>
+                <th>管理者</th>
+                <th>日時</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for h in histories %}
+            <tr>
+                <td>{{ h.id }}</td>
+                <td>{{ h.product.name }}</td>
+
+                <td>
+                    {% if h.change > 0 %}
+                        <span class="text-success fw-bold">+{{ h.change }}</span>
+                    {% else %}
+                        <span class="text-danger fw-bold">{{ h.change }}</span>
+                    {% endif %}
+                </td>
+
+                <td>{{ h.note }}</td>
+
+                <td>
+                    {% if h.admin_id %}
+                        {{ h.admin.name }}
+                    {% else %}
+                        システム（購入処理）
+                    {% endif %}
+                </td>
+
+                <td>{{ h.created_at.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

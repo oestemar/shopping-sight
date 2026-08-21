@@ -66,12 +66,12 @@
                         <option value="canceled" {% if order.status == "canceled" %}selected{% endif %}>canceled</option>
                         <option value="refunded" {% if order.status == "refunded" %}selected{% endif %}>refunded</option>
                     </select>
-                    <button type="submit" class="btn btn-primary mt-2">ステータス更新</button>
+                    <button type="submit" class="btn btn-dark mt-2">ステータス更新</button>
                 </form>
             </div>             
         </div>
         <div>
-            <a href="{{ url_for('orders.order_list') }}" class="btn btn-outline-primary">注文一覧に戻る</a>
+            <a href="{{ url_for('orders.order_list') }}" class="btn btn-dark">注文一覧に戻る</a>
         </div>
     </div>
 </div>

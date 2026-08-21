@@ -77,7 +77,6 @@ def product_edit_action(product_id):
 
     product.name = request.form.get("name")
     product.price = request.form.get("price")
-    product.stock = request.form.get("stock")
     product.sku = request.form.get("sku")
     product.brand = request.form.get("brand")
     product.description = request.form.get("description")

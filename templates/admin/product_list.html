@@ -2,7 +2,7 @@
 {% block title %}ダッシュボード{% endblock %}
 {% block content %}
 <div class="container">    
-    <div class="mx-auto" style="max-width: 60%;">
+    <div class="mx-auto" style="max-width: 100%;">
         <h2 class="mb-4">商品一覧</h2>
         <p>※ポートフォリオ用</p>
         <!-- 検索フォーム -->
@@ -40,11 +40,11 @@
 
             <!-- 検索ボタン -->
             <div class="col-md-2 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary w-100">検索</button>
+                <button type="submit" class="btn btn-dark w-100">検索</button>
             </div>
         </form> 
         <!-- 商品一覧 -->
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <tr>
                 <th>ID</th>
                 <th>商品名</th>
@@ -67,7 +67,7 @@
                 <td>{{ product.category.name if product.category }}</td>
                 <td>
                     <form action="{{ url_for('products.product_detail', product_id=product.id) }}" method="GET">
-                        <button type="submit" class="btn btn-sm btn-outline-primary">詳細</button>
+                        <button type="submit" class="btn btn-sm btn-outline-dark">詳細</button>
                     </form>
                 </td> 
             </tr>
@@ -75,10 +75,10 @@
         </table>
         <div class="d-flex mt-4 gap-2 mb-4">
             <form action="{{ url_for('products.product_add') }}" method="GET">
-                <button type="submit" class="btn btn-sm btn-outline-primary">追加</button>
+                <button type="submit" class="btn btn-sm btn-dark">追加</button>
             </form>
             <form action="{{ url_for('products.product_import') }}" method="GET">
-                <button type="submit" class="btn btn-sm btn-outline-primary">CSVインポート</button>
+                <button type="submit" class="btn btn-sm btn-dark">CSVインポート</button>
             </form>
         </div>
     </div>

@@ -2,16 +2,17 @@
 {% block title %}ダッシュボード{% endblock %}
 {% block content %}
 <div class="container">
-    <div class="mx-auto" style="max-width: 60%;">
+    <div class="mx-auto" style="max-width: 100%;">
         <h2 class="mb-4">カテゴリー一覧</h2>
         <p>※ポートフォリオ用</p>
     
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <tr>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Status</th>
                 <th>Sort_Order</th>
+                <th>編集</th>
             </tr>
             {% for category in categories %}
             <tr>
@@ -21,7 +22,7 @@
                 <td>{{ category.sort_order }}</td>
                 <td>
                     <form action="{{ url_for('categories.category_edit', category_id=category.id) }}" method="GET">
-                        <button type="submit" class="btn btn-outline-primary">編集</button>
+                        <button type="submit" class="btn btn-outline-dark">編集</button>
                     </form>        
                 </td>
             </tr>
@@ -29,7 +30,7 @@
         </table>
         <div class="admins-actions mt-3">
             <form action="{{ url_for('categories.category_add') }}" method="GET">
-                <button type="submit" class="btn btn-outline-primary">追加</button>
+                <button type="submit" class="btn btn-dark">追加</button>
             </form>        
         </div>
     </div>

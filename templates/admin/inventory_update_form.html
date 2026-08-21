@@ -1,0 +1,22 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}在庫更新{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">{{ product.name }} の在庫更新</h2>
+
+    <form action="{{ url_for('inventory.inventory_update', product_id=product.id) }}" method="POST">
+        <div class="mb-3">
+            <label class="form-label">変更数（例：+10、-5）</label>
+            <input type="number" name="change" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">理由（仕入れ・調整など）</label>
+            <input type="text" name="note" class="form-control">
+        </div>
+
+        <button class="btn btn-dark">更新する</button>
+    </form>
+</div>
+{% endblock %}

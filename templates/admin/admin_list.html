@@ -2,11 +2,11 @@
 {% block title %}ダッシュボード{% endblock %}
 {% block content %}
 <div class="container">
-    <div class="mx-auto" style="max-width: 60%;">
+    <div class="mx-auto" style="max-width: 100%;">
         <h2 class="mb-4">管理者一覧</h2>
         <p>※ポートフォリオ用</p>
     
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <tr>
                 <th>ID</th>
                 <th>Email</th>
@@ -23,7 +23,7 @@
                 <td>{{ admin.created_at }}</td>
                 <td>
                     <form action="{{ url_for('admins.password_change', admin_id=admin.id) }}" method="GET">
-                        <button type="submit" class="btn btn-outline-primary">パスワード変更</button>
+                        <button type="submit" class="btn btn-outline-dark">パスワード変更</button>
                     </form>
                 </td>                    
                 <td>
@@ -36,7 +36,7 @@
         </table>
         <div class="admins-actions mt-3">
             <form action="{{ url_for('admins.admin_add') }}" method="GET">
-                <button type="submit" class="btn btn-outline-primary">追加</button>
+                <button type="submit" class="btn btn-dark">追加</button>
             </form>        
         </div>
     </div>

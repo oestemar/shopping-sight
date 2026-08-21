@@ -1,9 +1,10 @@
 ## １．管理者認証
 | API名 | メソッド | エンドポイント | 概要 |
 | --- | --- | --- | --- |
-| 管理者ログイン | POST | ``/admin/login`` | 管理者認証（email / password） |
+| 管理者ログイン | POST | ``/admin/login`` | email / password による認証 |
 | ログアウト | GET | ``/admin/logout`` | セッション破棄 |
-| パスワード変更 | POST | ``/admin/password`` | パスワード更新 |
+| ダッシュボード表示 | GET | ``/admin/dashboard`` | 管理者トップ画面 |
+| パスワード変更 | POST | ``/admin/admins/password/<int:id>`` | 管理者自身または上位管理者によるパスワード変更 |
 | 管理者追加 | POST | ``/admin/register`` | 上位管理者による新規管理者登録 |
 
 ## ２．商品管理(products)
@@ -13,23 +14,23 @@
 | 商品詳細取得 | GET | ``/admin/products/<int:id>`` | 商品詳細を取得 |
 | 商品登録 | POST | ``/admin/products/register`` | 新規商品登録 |
 | 商品編集 | POST | ``/admin/products/edit/<int:id>`` | 商品情報更新 |
-| 商品削除 | DELETE | ``/admin/products/delete/<int:id>`` | 商品削除（上位管理者のみ） |
 | CSV商品インポート | POST | ``/admin/products/import_csv`` | CSVファイルから商品一括登録 |
 
-## ３．商品画像管理(product_images)
+## ３．在庫管理(inventory)
 | API名 | メソッド | エンドポイント | 概要 |
 | --- | --- | --- | --- |
-| 画像一覧取得 | GET | ``/admin/products/<int:id>/images`` | 商品画像一覧を取得 |
-| 画像追加 | POST | ``/admin/products/<int:id>/images/add`` | 商品画像アップロード（Supabase/S3） |
-| 画像削除 | DELETE | ``/admin/products/<int:id>/images/delete/<int:image_id>`` | 商品画像削除 |
+| 在庫一覧取得 | GET | ``/admin/inventory`` | 在庫一覧を取得 |
+| 在庫更新 | POST | ``/admin/inventory/update_form1/<int:id>`` | 在庫を更新 |
+| 在庫履歴（商品毎） | GET | ``/admin/inventory/history/<int:id>`` | 商品毎の在庫の履歴 |
+| 在庫履歴（全体） | GET | ``/admin/inventory/`` | 商品毎の在庫の履歴 |
+
 
 ## ４．カテゴリ管理(categories)
 | API名 | メソッド | エンドポイント | 概要 |
 | --- | --- | --- | --- |
 | カテゴリ一覧取得 | GET | ``/admin/categories`` | カテゴリ一覧を取得 |
-| カテゴリ登録 | POST | ``/admin/categories/register`` | 新規カテゴリ登録 |
+| カテゴリ追加 | POST | ``/admin/categories/add`` | 新規カテゴリ登録 |
 | カテゴリ編集 | POST | ``/admin/categories/edit/<int:id>`` | カテゴリ名・順序更新 |
-| カテゴリ削除 | DELETE | ``/admin/categories/delete/<int:id>`` | カテゴリ削除（商品紐付き不可） |
 
 ## ５．注文管理(orders/order_items)
 | API名 | メソッド | エンドポイント | 概要 |
@@ -44,8 +45,10 @@
 | ユーザー一覧取得 | GET | ``/admin/users`` | ユーザー一覧を取得 |
 | ユーザー詳細取得 | GET | ``/admin/users/<int:id>`` | ユーザー詳細を取得（注文履歴含む） |
 
-## ７．管理者設定(admins)
+## ７．管理者管理(admins)
 | API名 | メソッド | エンドポイント | 概要 |
 | --- | --- | --- | --- |
-| 管理者一覧取得 | GET | ``/admin/admins`` | 管理者一覧を取得（上位管理者のみ） |
+| 管理者一覧取得 | GET | ``/admin/admins`` | 管理者一覧を取得（全管理者） |
+| 管理者パスワード変更 | POST | ``/admin/admins/password/<int:id>`` | 管理者削除（上位管理者のみ） |
+| 管理者追加 | POST | ``/admin/admins/add`` | 管理者追加（上位管理者のみ） |
 | 管理者削除 | DELETE | ``/admin/admins/delete/<int:id>`` | 管理者削除（上位管理者のみ） |

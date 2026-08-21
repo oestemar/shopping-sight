@@ -1,0 +1,35 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}在庫履歴 - {{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">{{ product.name }} の在庫履歴</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>変更数</th>
+                <th>理由</th>
+                <th>管理者</th>
+                <th>日時</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for h in histories %}
+            <tr>
+                <td>{{ h.id }}</td>
+                <td>{{ h.change }}</td>
+                <td>{{ h.note }}</td>
+                <td>{{ h.admin.name if h.admin_id else "システム" }}</td>
+                <td>{{ h.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('inventory.inventory_history') }}" class="btn btn-dark mt-3">
+        全体履歴を見る
+    </a>
+</div>
+{% endblock %}

@@ -4,8 +4,6 @@
 | 管理者ログイン | POST | ``/admin/login`` | email / password による認証 |
 | ログアウト | GET | ``/admin/logout`` | セッション破棄 |
 | ダッシュボード表示 | GET | ``/admin/dashboard`` | 管理者トップ画面 |
-| パスワード変更 | POST | ``/admin/admins/password/<int:id>`` | 管理者自身または上位管理者によるパスワード変更 |
-| 管理者追加 | POST | ``/admin/register`` | 上位管理者による新規管理者登録 |
 
 ## ２．商品管理(products)
 | API名 | メソッド | エンドポイント | 概要 |
@@ -16,7 +14,14 @@
 | 商品編集 | POST | ``/admin/products/edit/<int:id>`` | 商品情報更新 |
 | CSV商品インポート | POST | ``/admin/products/import_csv`` | CSVファイルから商品一括登録 |
 
-## ３．在庫管理(inventory)
+## ３．注文管理(orders/order_items)
+| API名 | メソッド | エンドポイント | 概要 |
+| --- | --- | --- | --- |
+| 注文一覧取得 | GET | ``/admin/orders`` | 注文一覧を取得（ステータス・日付絞り込み対応） |
+| 注文詳細取得 | GET | ``/admin/orders/<int:id>`` | 注文詳細を取得（order_items含む） |
+| 注文ステータス更新 | POST | ``/admin/orders/update_status/<int:id>`` | 注文ステータス変更（shipped / canceled） |
+
+## ４．在庫管理(inventory)
 | API名 | メソッド | エンドポイント | 概要 |
 | --- | --- | --- | --- |
 | 在庫一覧取得 | GET | ``/admin/inventory`` | 在庫一覧を取得 |
@@ -25,19 +30,13 @@
 | 在庫履歴（全体） | GET | ``/admin/inventory/`` | 商品毎の在庫の履歴 |
 
 
-## ４．カテゴリ管理(categories)
+## ５．カテゴリ管理(categories)
 | API名 | メソッド | エンドポイント | 概要 |
 | --- | --- | --- | --- |
 | カテゴリ一覧取得 | GET | ``/admin/categories`` | カテゴリ一覧を取得 |
 | カテゴリ追加 | POST | ``/admin/categories/add`` | 新規カテゴリ登録 |
-| カテゴリ編集 | POST | ``/admin/categories/edit/<int:id>`` | カテゴリ名・順序更新 |
+| カテゴリ編集 | POST | ``/admin/categories/edit/<int:id>`` | カテゴリ名・ステータス変更・順序更新 |
 
-## ５．注文管理(orders/order_items)
-| API名 | メソッド | エンドポイント | 概要 |
-| --- | --- | --- | --- |
-| 注文一覧取得 | GET | ``/admin/orders`` | 注文一覧を取得（ステータス・日付絞り込み対応） |
-| 注文詳細取得 | GET | ``/admin/orders/<int:id>`` | 注文詳細を取得（order_items含む） |
-| 注文ステータス更新 | POST | ``/admin/orders/update_status/<int:id>`` | 注文ステータス変更（shipped / canceled） |
 
 ## ６．ユーザー管理(users)
 | API名 | メソッド | エンドポイント | 概要 |
@@ -49,6 +48,6 @@
 | API名 | メソッド | エンドポイント | 概要 |
 | --- | --- | --- | --- |
 | 管理者一覧取得 | GET | ``/admin/admins`` | 管理者一覧を取得（全管理者） |
-| 管理者パスワード変更 | POST | ``/admin/admins/password/<int:id>`` | 管理者削除（上位管理者のみ） |
+| 管理者パスワード変更 | POST | ``/admin/admins/password/<int:id>`` | 管理者のパスワード変更（上位管理者のみ） |
 | 管理者追加 | POST | ``/admin/admins/add`` | 管理者追加（上位管理者のみ） |
 | 管理者削除 | DELETE | ``/admin/admins/delete/<int:id>`` | 管理者削除（上位管理者のみ） |

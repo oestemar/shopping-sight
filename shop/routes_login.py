@@ -23,4 +23,4 @@ def login():
 @shop_login_bp.get("/logout")
 def logout():
     session.clear()
-    return redirect("/shop/menu")
+    return render_template("logout.html")

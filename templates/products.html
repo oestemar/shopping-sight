@@ -33,7 +33,7 @@
                                     <!-- 数量増減欄 -->
                                     <div class="input-group mb-3" style="max-width: 140px;">
                                         <button class="btn btn-outline-secondary text-dark" type="button" onclick="changeQuantity(this, -1)">−</button>
-                                        <input type="number" class="form-control text-center qty-input" name="quantity" value="1" min="1">
+                                        <input type="number" id="qty" class="form-control text-center qty-input" name="quantity" value="1" min="1">
                                         <button class="btn btn-outline-secondary text-dark" type="button" onclick="changeQuantity(this, 1)">＋</button>
                                     </div>
                                     <a href="{{ url_for('shop_product_detail.product_detail', product_id=product.id) }}"

@@ -75,13 +75,45 @@ def product_edit_action(product_id):
    
     product = Product.query.get_or_404(product_id)
 
-    product.name = request.form.get("name")
-    product.price = request.form.get("price")
-    product.sku = request.form.get("sku")
-    product.brand = request.form.get("brand")
-    product.description = request.form.get("description")
-    product.category_id = request.form.get("category_id")
-    product.status = request.form.get("status")
+    # バリデーション
+    name = request.form.get("name", "").strip()
+    price_raw = request.form.get("price", "").strip()
+    sku = request.form.get("sku", "").strip()
+    brand = request.form.get("brand", "").strip()
+    description = request.form.get("description", "").strip()
+    category_id = request.form.get("category_id")
+    status = request.form.get("status")
+
+    # name
+    if not name or name == "":
+        flash("商品名は必須です", "danger")
+        return redirect(url_for("products.product_edit", product_id=product.id))
+
+    # price
+    if not price_raw.isdigit():
+        flash("価格は数値で入力してください", "danger")
+        return redirect(url_for("products.product_edit", product_id=product.id))
+
+    price = int(price_raw)
+
+    # sku
+    if not sku:
+        flash("SKUは必須です", "danger")
+        return redirect(url_for("products.product_edit", product_id=product.id))
+
+    # status
+    if status not in ["1", "2", "3"]:
+        flash("ステータスが不正です", "danger")
+        return redirect(url_for("products.product_edit", product_id=product.id))
+
+    # --- 値をセット ---
+    product.name = name
+    product.price = price
+    product.sku = sku
+    product.brand = brand
+    product.description = description
+    product.category_id = category_id
+    product.status = int(status)
 
     # JSON のパース
     spec_json_raw = request.form.get("spec_json")
@@ -114,9 +146,10 @@ def product_edit_action(product_id):
 
         if new_order is not None:
             img.sort_order = int(new_order)
-        db.session.commit()
 
-    return redirect(url_for("products.product_edit", product_id=product.id))
+    db.session.commit()
+
+    return redirect(url_for("products.product_detail", product_id=product.id))
 
 @products_bp.get("/add")
 @admin_login_required
@@ -131,16 +164,48 @@ def product_add():
 @admin_login_required
 @role_required(2, 3)
 def product_add_action():
-    product = Product(
-        name=request.form.get("name"),
-        price=request.form.get("price"),
-        stock=request.form.get("stock"),
-        sku=request.form.get("sku"),
-        brand=request.form.get("brand"),
-        description=request.form.get("description"),
-        category_id=request.form.get("category_id"),
-        status=request.form.get("status")
-    )
+
+    name=request.form.get("name","").strip()
+    price_raw=request.form.get("price","").strip()
+    stock=request.form.get("stock","").strip()
+    sku=request.form.get("sku","").strip()
+    brand=request.form.get("brand","").strip()
+    description=request.form.get("description","").strip()
+    category_id=request.form.get("category_id")
+    status=request.form.get("status")
+
+    # name
+    if not name:
+        flash("商品名は必須です", "danger")
+        return redirect(url_for("products.product_edit", product_id=product.id))
+
+    # price
+    if not price_raw.isdigit():
+        flash("価格は数値で入力してください", "danger")
+        return redirect(url_for("products.product_edit", product_id=product.id))
+
+    price = int(price_raw)
+
+    # sku
+    if not sku:
+        flash("SKUは必須です", "danger")
+        return redirect(url_for("products.product_edit", product_id=product.id))
+
+    # status
+    if status not in ["1", "2", "3"]:
+        flash("ステータスが不正です", "danger")
+        return redirect(url_for("products.product_edit", product_id=product.id))
+
+    # --- 値をセット ---
+    product = Product()
+    product.name = name
+    product.price = price
+    product.stock = stock
+    product.sku = sku
+    product.brand = brand
+    product.description = description
+    product.category_id = category_id
+    product.status = int(status)
 
     # JSON のパース
     spec_json_raw = request.form.get("spec_json")

@@ -21,7 +21,7 @@
                 <td>{{ h.id }}</td>
                 <td>{{ h.change }}</td>
                 <td>{{ h.note }}</td>
-                <td>{{ h.admin.name if h.admin_id else "システム" }}</td>
+                <td>{{ h.admin.email if h.admin_id else "システム" }}</td>
                 <td>{{ h.created_at }}</td>
             </tr>
             {% endfor %}

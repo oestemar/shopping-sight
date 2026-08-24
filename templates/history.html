@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}注文一覧{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <div class="mx-auto" style="max-width: 100%;">
+        <h2 class="mb-4">{{ orders.user}}注文一覧</h2>
+        <p>※ポートフォリオ用</p>
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>注文ID</th>
+                    <th>顧客名</th>
+                    <th>合計金額</th>
+                    <th>支払い方法</th>
+                    <th>ステータス</th>
+                    <th>注文日時</th>
+                    <th>詳細</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ "{:,}".format(order.total_amount) }}円</td>
+                    <td>{{ order.payment_method }}</td>
+                    <td>
+                        <span class="badge bg-primary">{{ order.status }}</span>
+                    </td>
+                    <td>{{ order.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+                    <td>
+                        <a href="{{ url_for('orders.order_detail', order_id=order.id) }}" class="btn btn-sm btn-outline-dark">
+                            詳細を見る
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

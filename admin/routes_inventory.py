@@ -5,6 +5,7 @@ from models.inventory_history import InventoryHistory
 from admin.routes_auth import admin_login_required, get_current_admin
 from models import db
 from admin.routes_auth import role_required
+from models.admin import Admin
 
 inventory_bp = Blueprint("inventory", __name__)
 
@@ -44,6 +45,7 @@ def inventory_update(product_id):
         note=note,
         created_at=datetime.utcnow(),
     )
+    print(f"admin_id: {history.admin_id}")
     db.session.add(history)
     db.session.commit()
     flash("在庫を更新しました。", "success")

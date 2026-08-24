@@ -7,7 +7,7 @@
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
         rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <!-- ① 最上部：タイトル＋カート -->
@@ -34,6 +34,12 @@
                 {% endif %}
             </a>
         </div>
+        <div class="shop-history p-2">
+            <a href="/shop/history" class="text-dark text-decoration-none">
+                注文履歴
+            </a>
+        </div>
+
         <div class="shop-logout p-2">
             <a href="/shop/logout" class="text-dark text-decoration-none">
                 ログアウト
@@ -45,50 +51,53 @@
         </div>  
     </header>
 
-    <!-- ② 手続き遷移表示（ステップバー） -->    
-    {% if step %}
-    <!-- ② 手続き遷移表示（ステップバー） -->
-    <nav class="my-4 w-50 mx-auto">
-        <ul class="nav justify-content-center">
-            <li class="nav-item flex-fill text-center mx-3">
-                <div class="circle {% if step == 'menu' %}active{% endif %}">
-                    {% if step == 'cart' %}✓{% endif %}
-                </div>
-                <div class="small mt-1">カート</div>
-            </li>
-            <li class="nav-item flex-fill text-center mx-3">
-                <div class="circle {% if step == 'cart' %}active{% endif %}">
-                    {% if step == 'checkout' %}✓{% endif %}
-                </div>
-                <div class="small mt-1">精算確認</div>
-            </li>
-            <li class="nav-item flex-fill text-center mx-3">
-                <div class="circle {% if step == 'checkout' %}active{% endif %}">
-                    {% if step == 'payment_method' %}✓{% endif %}
-                </div>
-                <div class="small mt-1">決済方法</div>
-            </li>
-            <li class="nav-item flex-fill text-center mx-3">
-                <div class="circle {% if step == 'payment_method' %}active{% endif %}">
-                    {% if step == 'payment' %}✓{% endif %}
-                </div>
-                <div class="small mt-1">決済</div>
-            </li>
-            <li class="nav-item flex-fill text-center mx-3">
-                <div class="circle {% if step == 'payment' %}active{% endif %}">
-                    {% if step == 'success' %}✓{% endif %}
-                </div>
-                <div class="small mt-1">完了</div>
-            </li>            
-        </ul>
-    </nav>
-    {% endif %}
-
-    <!-- ③ 中央メイン：メニュー -->    
-    <!-- ② 手続き遷移表示（ステップバー） -->    
+    <!-- ③ 中央メイン：メニュー -->     
     <main class="page-bg">
-        {% block content %}      
-        {% endblock %}
+
+        <!-- ② 手続き遷移表示（ステップバー） -->    
+        {% if step %}
+        <!-- ② 手続き遷移表示（ステップバー） -->
+        <div class="stepbar-container">
+            <nav class="w-50 mx-auto">
+                <ul class="nav justify-content-center">
+                    <li class="nav-item flex-fill text-center mx-3">
+                        <div class="circle {% if step == 'menu' %}active{% endif %}">
+                            {% if step == 'cart' %}✓{% endif %}
+                        </div>
+                        <div class="small mt-1">カート</div>
+                    </li>
+                    <li class="nav-item flex-fill text-center mx-3">
+                        <div class="circle {% if step == 'cart' %}active{% endif %}">
+                            {% if step == 'checkout' %}✓{% endif %}
+                        </div>
+                        <div class="small mt-1">精算確認</div>
+                    </li>
+                    <li class="nav-item flex-fill text-center mx-3">
+                        <div class="circle {% if step == 'checkout' %}active{% endif %}">
+                            {% if step == 'payment_method' %}✓{% endif %}
+                        </div>
+                        <div class="small mt-1">決済方法</div>
+                    </li>
+                    <li class="nav-item flex-fill text-center mx-3">
+                        <div class="circle {% if step == 'payment_method' %}active{% endif %}">
+                            {% if step == 'payment' %}✓{% endif %}
+                        </div>
+                        <div class="small mt-1">決済</div>
+                    </li>
+                    <li class="nav-item flex-fill text-center mx-3">
+                        <div class="circle {% if step == 'payment' %}active{% endif %}">
+                            {% if step == 'success' %}✓{% endif %}
+                        </div>
+                        <div class="small mt-1">完了</div>
+                    </li>            
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+
+        <div class="main-body">
+            {% block content %}{% endblock %}
+        </div>
             
         {% if error %}
         <div class="text-white error">{{ error }}</div>

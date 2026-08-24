@@ -1,10 +1,27 @@
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #ffffff; /* 背景色を白に設定 */
+}
+
+main {
+    padding-top: 60px; /* ヘッダーの高さ分の余白を追加 */
+    background-color: #e6f5e6; /* 薄い緑 */
+    min-height: 100vh;
+    height: auto; /* ビューポートの高さに合わせる */
+}
+
 .card {
     border-radius: 0 !important;
 }
 
-.page-bg {
-    background-color: #e6f5e6; /* 薄い緑 */
-    min-height: 100vh;        /* 画面全体に広げる */
-    padding-bottom: 40px;     /* 下に余白を作る（カードがくっつかない） */
+.stepbar-container {
+    background-color: #79b279eb;
+    padding: 0;
 }
+
+
 

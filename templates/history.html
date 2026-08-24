@@ -16,7 +16,6 @@
                     <th>支払い方法</th>
                     <th>ステータス</th>
                     <th>注文日時</th>
-                    <th>詳細</th>
                 </tr>
             </thead>
 
@@ -31,11 +30,6 @@
                         <span class="badge bg-primary">{{ order.status }}</span>
                     </td>
                     <td>{{ order.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
-                    <td>
-                        <a href="{{ url_for('orders.order_detail', order_id=order.id) }}" class="btn btn-sm btn-outline-dark">
-                            詳細を見る
-                        </a>
-                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

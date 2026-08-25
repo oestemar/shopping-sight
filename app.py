@@ -31,9 +31,12 @@ from admin.routes_inventory import inventory_bp
 from supabase import create_client
 
 def create_app():
+    print("create_app: start")
     load_dotenv()
     app = Flask(__name__)
+    print("came here before SECRET_KEY")
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+    print("came here after SECRET_KEY")
     mysql_user = os.getenv("MYSQLUSER")
     mysql_password = os.getenv("MYSQLPASSWORD")
     mysql_host = os.getenv("MYSQLHOST")

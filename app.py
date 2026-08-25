@@ -34,7 +34,15 @@ def create_app():
     load_dotenv()
     app = Flask(__name__)
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+    mysql_user = os.getenv("MYSQLUSER")
+    mysql_password = os.getenv("MYSQLPASSWORD")
+    mysql_host = os.getenv("MYSQLHOST")
+    mysql_port = os.getenv("MYSQLPORT")
+    mysql_db = os.getenv("MYSQLDATABASE")
+
+    app.config["SQLALCHEMY_DATABASE_URI"] = (
+    f"mysql+pymysql://{mysql_user}:{mysql_password}@{mysql_host}:{mysql_port}/{mysql_db}"
+    )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     db.init_app(app)

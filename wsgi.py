@@ -1,9 +1,3 @@
-print("WSGI: start import")
+import app
 
-from app import create_app
-
-print("WSGI: before create_app")
-
-app = create_app()
-
-print("WSGI: after create_app")
+app = app.create_app()

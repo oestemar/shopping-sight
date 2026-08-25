@@ -52,15 +52,15 @@ def create_app():
     Migrate(app, db)
 
     # モデルを読み込む
-#    from models.user import User
-#    from models.admin import Admin
-#    from models.category import Category
-#    from models.product import Product
-#    from models.image import ProductImage
-#    from models.order import Order
-#    from models.order_item import OrderItem
-#    from models.cart import Cart
-#    from models.inventory_history import InventoryHistory
+    from models.user import User
+    from models.admin import Admin
+    from models.category import Category
+    from models.product import Product
+    from models.image import ProductImage
+    from models.order import Order
+    from models.order_item import OrderItem
+    from models.cart import Cart
+    from models.inventory_history import InventoryHistory
 
     with app.app_context():
         db.create_all()

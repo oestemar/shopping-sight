@@ -68,7 +68,7 @@ def create_app():
     # Blueprint 登録
     app.register_blueprint(shop_register_bp)
     app.register_blueprint(shop_login_bp)
-    app.register_blueprint(shop_menu_bp, url_prefix="/shop/menu")
+#    app.register_blueprint(shop_menu_bp, url_prefix="/shop/menu")
     app.register_blueprint(shop_products_bp, url_prefix="/shop/products")
     app.register_blueprint(shop_product_detail_bp, url_prefix="/shop/product_detail")
     app.register_blueprint(shop_cart_bp, url_prefix="/shop/cart")
@@ -97,8 +97,8 @@ def create_app():
         traceback.print_exc()
         raise e
 
-#    @app.context_processor
-#    def inject_cart_count():
+    @app.context_processor
+    def inject_cart_count():
         user_id = session.get("user_id")
         if not user_id:
             print("cart_count: 0(no user)")
@@ -110,8 +110,8 @@ def create_app():
         print(f"cart_count: {count}")
         return dict(cart_count=count)
 
-#    @app.context_processor
-#    def inject_user():
+    @app.context_processor
+    def inject_user():
         user_id = session.get("user_id")
         if not user_id:
             return dict(login_user=None)
@@ -119,8 +119,8 @@ def create_app():
         user = User.query.get(user_id)
         return dict(login_user=user)
 
-#    @app.context_processor
-#    def inject_admin():
+    @app.context_processor
+    def inject_admin():
         admin_id = session.get("admin_id")
         if not admin_id:
             return dict(login_admin=None)

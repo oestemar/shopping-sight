@@ -68,7 +68,7 @@ def create_app():
     # Blueprint 登録
     app.register_blueprint(shop_register_bp)
     app.register_blueprint(shop_login_bp)
-#    app.register_blueprint(shop_menu_bp, url_prefix="/shop/menu")
+    app.register_blueprint(shop_menu_bp, url_prefix="/shop/menu")
     app.register_blueprint(shop_products_bp, url_prefix="/shop/products")
     app.register_blueprint(shop_product_detail_bp, url_prefix="/shop/product_detail")
     app.register_blueprint(shop_cart_bp, url_prefix="/shop/cart")

@@ -150,8 +150,3 @@ def create_app():
         return render_template('admin/admin_error403.html'), 403
 
     return app
-
-app = create_app()
-
-if __name__ == "__main__":
-    app.run(debug=True)

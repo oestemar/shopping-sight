@@ -97,8 +97,8 @@ def create_app():
         traceback.print_exc()
         raise e
 
-    @app.context_processor
-    def inject_cart_count():
+#    @app.context_processor
+#    def inject_cart_count():
         user_id = session.get("user_id")
         if not user_id:
             print("cart_count: 0(no user)")
@@ -110,8 +110,8 @@ def create_app():
         print(f"cart_count: {count}")
         return dict(cart_count=count)
 
-    @app.context_processor
-    def inject_user():
+#    @app.context_processor
+#    def inject_user():
         user_id = session.get("user_id")
         if not user_id:
             return dict(login_user=None)
@@ -119,8 +119,8 @@ def create_app():
         user = User.query.get(user_id)
         return dict(login_user=user)
 
-    @app.context_processor
-    def inject_admin():
+#    @app.context_processor
+#    def inject_admin():
         admin_id = session.get("admin_id")
         if not admin_id:
             return dict(login_admin=None)

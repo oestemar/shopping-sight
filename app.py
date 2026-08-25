@@ -149,4 +149,5 @@ def create_app():
     def page_not_found(e):
         return render_template('admin/admin_error403.html'), 403
 
+    print("came here at create_app's end")
     return app

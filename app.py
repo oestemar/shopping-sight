@@ -78,13 +78,13 @@ def create_app():
     app.register_blueprint(shop_complete_bp, url_prefix="/shop/complete")
     app.register_blueprint(history_bp, url_prefix="/shop/history")
 
-    app.register_blueprint(auth_bp, url_prefix="/admin")
-    app.register_blueprint(products_bp, url_prefix="/admin/products")
-    app.register_blueprint(categories_bp, url_prefix="/admin/categories")
-    app.register_blueprint(orders_bp, url_prefix="/admin/orders")
-    app.register_blueprint(users_bp, url_prefix="/admin/users")
-    app.register_blueprint(admins_bp, url_prefix="/admin/admins")
-    app.register_blueprint(inventory_bp, url_prefix="/admin/inventory")
+#    app.register_blueprint(auth_bp, url_prefix="/admin")
+#    app.register_blueprint(products_bp, url_prefix="/admin/products")
+#    app.register_blueprint(categories_bp, url_prefix="/admin/categories")
+#    app.register_blueprint(orders_bp, url_prefix="/admin/orders")
+#    app.register_blueprint(users_bp, url_prefix="/admin/users")
+#    app.register_blueprint(admins_bp, url_prefix="/admin/admins")
+#    app.register_blueprint(inventory_bp, url_prefix="/admin/inventory")
 
     # 一時的に入れているデバッグコード下記２つ
     @app.before_request

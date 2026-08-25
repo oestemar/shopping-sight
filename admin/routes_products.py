@@ -12,7 +12,6 @@ import json
 import csv
 import io
 import zipfile
-import app
 from flask import current_app
 
 products_bp = Blueprint("products", __name__)

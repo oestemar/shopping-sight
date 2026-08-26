@@ -318,7 +318,12 @@ def product_import_action():
                 flash(f"JSONが不正です: {row['name']}", "danger")
 
         db.session.add(product)
-        db.session.commit()  # product.id が確定
+        try:
+            db.session.commit()
+        except Exception as e:
+            print("IMPORT ERROR:", e)
+            raise
+
         ProductImage.query.filter_by(product_id=product.id).delete()
         db.session.commit()
 

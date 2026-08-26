@@ -45,7 +45,6 @@ def inventory_update(product_id):
         note=note,
         created_at=datetime.utcnow(),
     )
-    print(f"admin_id: {history.admin_id}")
     db.session.add(history)
     db.session.commit()
     flash("在庫を更新しました。", "success")

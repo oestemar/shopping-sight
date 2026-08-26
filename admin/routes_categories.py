@@ -24,9 +24,6 @@ def category_edit(category_id):
 @admin_login_required
 @role_required(2, 3)
 def category_edit_action(category_id):
-
-    print("DEBUG: category_edit_action POST received")
-
     category = Category.query.get_or_404(category_id)
 
     category.name = request.form.get("name")

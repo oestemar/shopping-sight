@@ -57,7 +57,8 @@ def add_to_cart():
             price_at_added=Product.query.get(product_id).price
         )
         db.session.add(new_item)
-        db.session.commit()
+
+    db.session.commit()
 
     print("referrer:", request.referrer)
     return redirect(request.referrer)

@@ -62,11 +62,9 @@ def logout():
 @admin_login_required
 @role_required(1, 2, 3)
 def dashboard():
-    print("DEBUG: dashboard() reached")
     product_count = Product.query.count()
     order_count = Order.query.count()
     user_count = User.query.count()
-    print("DEBUG: rendering admin/base.html")
     return render_template(
         "admin/dashboard.html",
         product_count=product_count,

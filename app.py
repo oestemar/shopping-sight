@@ -31,16 +31,10 @@ from admin.routes_inventory import inventory_bp
 from supabase import create_client
 
 def create_app():
-    print("create_app: start")
     app = Flask(__name__)
-#    @app.route("/")
-#    def health_check():
-#        return "OK", 200
     
     load_dotenv()
-    print("came here before SECRET_KEY")
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-    print("came here after SECRET_KEY")
     mysql_user = os.getenv("MYSQLUSER")
     mysql_password = os.getenv("MYSQLPASSWORD")
     mysql_host = os.getenv("MYSQLHOST")
@@ -51,8 +45,6 @@ def create_app():
     f"mysql+pymysql://{mysql_user}:{mysql_password}@{mysql_host}:{mysql_port}/{mysql_db}"
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-    print("PORT:", os.getenv("PORT"))
 
     db.init_app(app)
     Migrate(app, db)
@@ -113,7 +105,6 @@ def create_app():
         count = db.session.query(db.func.sum(Cart.quantity))\
                         .filter_by(user_id=user_id).scalar() or 0
 
-        print(f"cart_count: {count}")
         return dict(cart_count=count)
 
     @app.context_processor
@@ -155,5 +146,4 @@ def create_app():
     def page_not_found(e):
         return render_template('admin/admin_error403.html'), 403
 
-    print("came here at create_app's end")
     return app

@@ -68,10 +68,7 @@ def product_edit(product_id):
 @products_bp.post("/edit/<int:product_id>")
 @admin_login_required
 @role_required(2, 3)
-def product_edit_action(product_id):
-
-    print("DEBUG: product_edit_action POST received")
-   
+def product_edit_action(product_id):   
     product = Product.query.get_or_404(product_id)
 
     # バリデーション
@@ -262,7 +259,6 @@ def product_import():
 def product_import_action():
     csv_file = request.files.get("csv_file")
     image_zip = request.files.get("image_zip")
-    print("ZIP FILE EXISTS:", image_zip is not None)
 
     if not csv_file:
         flash("CSVファイルが選択されていません", "danger")
@@ -364,7 +360,6 @@ def upload_to_supabase_any(bytes_data, filename, mime="image/png"):
         bytes_data,
         file_options={"content-type": mime},
     )
-    print("UPLOAD RESULT:", res_upload)
 
     return bucket.get_public_url(filename)
 

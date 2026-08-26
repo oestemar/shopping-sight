@@ -13,8 +13,6 @@ admins_bp = Blueprint("admins", __name__)
 @admin_login_required
 def admin_list():
     admins = Admin.query.order_by(Admin.id).all()
-    for admin in admins:
-        print(admin.id)
     return render_template("admin/admin_list.html", admins=admins)
 
 @admins_bp.get("/password/<int:admin_id>")

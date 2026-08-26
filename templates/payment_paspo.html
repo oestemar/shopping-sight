@@ -16,13 +16,10 @@
         </div>
 
         <p id="status" class="text-center fw-bold text-secondary">読み取り待機中…</p>
-    </div>  .
-    <p>DEBUG order_id: {{ order_id }}</p>
+    </div>
     <form id="autoForm" action="{{ url_for('shop_payment.payment_success', order_id=order_id) }}" method="GET">
         <input type="hidden" name="ic_status" value="success">
     </form>
-
-
 </div>
 <script>
     // 読み取り演出

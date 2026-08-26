@@ -32,8 +32,12 @@ from supabase import create_client
 
 def create_app():
     print("create_app: start")
-    load_dotenv()
     app = Flask(__name__)
+    @app.route("/")
+    def health_check():
+        return "OK", 200
+    
+    load_dotenv()
     print("came here before SECRET_KEY")
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
     print("came here after SECRET_KEY")

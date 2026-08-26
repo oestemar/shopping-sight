@@ -52,6 +52,8 @@ def create_app():
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+    print("PORT:", os.getenv("PORT"))
+
     db.init_app(app)
     Migrate(app, db)
 

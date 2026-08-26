@@ -35,7 +35,7 @@ def category_edit_action(category_id):
 
     db.session.commit()
 
-    return redirect(url_for("categories.category_edit", category_id=category.id))
+    return redirect(url_for("categories.category_list", category_id=category.id))
 
 @categories_bp.get("/add")
 @admin_login_required

@@ -83,7 +83,7 @@
                     </div>
                     <form action="{{ url_for('shop_cart.add_to_cart') }}" method="post" class="mt-auto">
                         <input type="hidden" name="product_id" value="{{ product.id }}">
-                        <input type="hidden" name="quantity" value="1" id="qty-hidden">
+                        <input type="hidden" name="quantity" value="1" class="qty-hidden">
                         <button class="btn btn-dark" style="position: relative; z-index: 1;">カートに追加</button>
                     </form>
                     <!-- ★ 売り切れメッセージをここに表示 -->

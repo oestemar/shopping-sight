@@ -6,6 +6,7 @@ import os
 import traceback
 from flask import send_from_directory
 from flask import render_template
+from werkzeug.exceptions import NotFound 
 
 from models import db
 
@@ -93,6 +94,8 @@ def create_app():
     def _log_exception(e):
         print("DEBUG: exception caught:", type(e), e)
         traceback.print_exc()
+        if isinstance(e, werkzeug.exceptions.NotFound):
+            return "Not Found", 404        
         raise e
 
     @app.context_processor

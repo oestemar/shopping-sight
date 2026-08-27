@@ -49,7 +49,7 @@ def login():
             session["admin_id"] = admin.id
             session["admin_role"] = admin.role
             return redirect(url_for("auth.dashboard"))
-        flash("メールアドレスまたはパスワードが違います。", "danger")
+        flash("メールアドレスまたはパスワードが違います。", "error")
         return render_template("admin/login.html", login_page=True)
 
 @auth_bp.route("/logout")

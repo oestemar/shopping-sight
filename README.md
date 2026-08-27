@@ -1,6 +1,20 @@
 # Shopping-sight
 
-Flask + MySQL + Supabase を用いて構築した EC サイト（購入側＋管理者側）。メニュー・商品表示・購入処理のフロントエンド機能と、商品管理・在庫管理・注文管理・ユーザー管理・管理者権限などのバックオフィス機能を備えています。
+Flask + MySQL + Railway + Supabase を用いて構築した EC サイト（購入側＋管理者側）。メニュー・商品表示・購入処理のフロントエンド機能と、商品管理・在庫管理・注文管理・ユーザー管理・管理者権限などのバックオフィス機能を備えています。
+
+一般ユーザーは商品閲覧・カート追加・決済・注文履歴閲覧が可能。
+
+### デモURL
+https://shopping-sight-production.up.railway.app/
+
+### デモ用ログイン情報
+- デモ用ユーザアカウント
+  - name: デモ
+  - Email: demo@p.com
+  - Password: demo
+- デモ用管理者アカウント
+  - Email: demo@example.com
+  - Password: demo
 
 ## 1.プロジェクト概要
 Shopping-sight は以下の 2 つの画面で構成されています：
@@ -54,13 +68,12 @@ shopping-sight/
   └── README.md
 ```
 
-
 ## 4.画面遷移図
 ### 管理者側
-- 管理者版仕様書（Admin版）に記載 → 商品管理 / 注文管理 / 在庫管理 / カテゴリ管理 / ユーザー管理 / 管理者管理
+- [管理者版仕様書（Admin版）](docs/仕様書_Admin.md)に記載 → 商品管理 / 注文管理 / 在庫管理 / カテゴリ管理 / ユーザー管理 / 管理者管理
 
 ### 購入側
-Userflow版仕様書に記載
+- [Userflow版仕様書](docs/仕様書_Purchase.md)に記載
 → メニュー / 商品一覧 / 商品詳細 / カート / 精算 / 決済 / 完了
 
 ## 5.API仕様書
@@ -95,8 +108,8 @@ Userflow版仕様書に記載
 - ユーザー管理テスト
 - 管理者権限テスト
 
-## 7.セットアップ手順（例）
-- git clone https://github.com/xxx/shopping-sight.git
+## 7.セットアップ手順
+- git clone https://github.com/oestemar/shopping-sight.git
 - cd shopping-sight
 - python -m venv venv
 - venv\Scripts\activate

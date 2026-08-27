@@ -6,6 +6,7 @@ import os
 import traceback
 from flask import send_from_directory
 from flask import render_template
+import werkzeug
 from werkzeug.exceptions import NotFound 
 
 from models import db
